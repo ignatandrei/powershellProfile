@@ -1,0 +1,42 @@
+name: Build unified PowerShell profile
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Concatenate profile scripts
+        shell: pwsh
+        run: |
+          ./scripts/concat-pws.ps1
+
+      - name: Upload unified profile as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pws-profile.ps1
+          path: dist/pws-profile.ps1
+          if-no-files-found: error
+
+      - name: Commit updated dist/pws-profile.ps1 back to repo
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/pws-profile.ps1
+          if (git diff --cached --quiet) {
+            Write-Host "No changes to commit."
+          } else {
+            git commit -m "chore: update generated pws-profile.ps1 [skip ci]"
+            git push
+          }
