@@ -10,10 +10,14 @@ This repository contains multiple small `.ps1` utility files under `src/pws`. A 
 Run this once (or any time you want to update) to download the latest generated profile into your `$PROFILE` path:
 
 ```powershell
+
 # Ensure the profile directory exists, then download the latest unified profile
 $profileDir = Split-Path -Parent $PROFILE
-if (-not (Test-Path $profileDir)) { New-Item -ItemType Directory -Force -Path $profileDir | Out-Null }
+if (-not (Test-Path $profileDir)) {
+     New-Item -ItemType Directory -Force -Path $profileDir | Out-Null 
+}
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/ignatandrei/powershellProfile/main/dist/pws-profile.ps1" -OutFile $PROFILE
+
 ```
 
 Notes:
