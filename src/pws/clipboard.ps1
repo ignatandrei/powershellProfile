@@ -50,7 +50,7 @@ function copyCommand {
         $first = $CommandParts[0]
         if (Test-Path $first -PathType Leaf){
             $content =Get-Content $first
-            $lines.AddRange(($content)
+            $lines.AddRange($content)
         }
     else{
 
