@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2025-11-01 12:21:19 +02:00
+# Generated: 2025-11-01 16:38:08 +02:00
 # Repository: (local run)
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -335,7 +335,7 @@ function copyCommand {
         $first = $CommandParts[0]
         if (Test-Path $first -PathType Leaf){
             $content =Get-Content $first
-            $lines.Add($content)
+            $lines.AddRange(($content)
         }
     else{
 
@@ -360,7 +360,7 @@ function copyCommand {
     else {
       Write-Warning "No input to copy. Pipe text or pass args, e.g.: 'npm run start' | copyCommand or: copyCommand npm run start"
     }
-    Write-Host $CommandParts.Count
+    # Write-Host $CommandParts.Count
   }
 }
 
@@ -539,7 +539,7 @@ function Show-MonthCalendar {
         [switch]$StartOnMonday
     )
 
-    $highlightToday = $true
+    $HighlightToday = $true
     $firstDay = Get-Date -Year $Year -Month $Month -Day 1 -Hour 0 -Minute 0 -Second 0
     $daysInMonth = [DateTime]::DaysInMonth($Year, $Month)
     #$monthName = $firstDay.ToString('MMMM yyyy')
@@ -1009,8 +1009,14 @@ function Start-BackgroundProcess {
 		[Parameter(Mandatory=$true, Position=0, ValueFromRemainingArguments=$true)]
 		[string[]]$CommandLine
 	)
-
 	$command = $CommandLine -join ' '
+	
+	#TODO Test this!	
+	# $escapedArgs = $CommandLine | ForEach-Object {
+	# 	"'{0}'" -f ([System.Management.Automation.Language.CodeGeneration]::EscapeSingleQuotedStringContent($_))
+	# }
+	# $command = "& " + ($escapedArgs -join ' ')
+	
 	Write-Host "Starting background process: $command"
 	Start-Process -FilePath pwsh -ArgumentList "-WindowStyle Hidden -Command $command" -WindowStyle Hidden
 }
@@ -1028,7 +1034,12 @@ function Wait-ForPID {
 		$RealPid = $ProcessOrPID;
 	}
 	else {
-		$RealPid = (Get-Process -Name $ProcessOrPID).Id
+		$process = Get-Process -Name $ProcessOrPID -ErrorAction SilentlyContinue
+		if (-not $process) {
+			Write-Host "Process $ProcessOrPID is not running."
+			return
+		}
+		$RealPid = $process.Id
 	}
 
 	while (Get-Process -Id $RealPid -ErrorAction SilentlyContinue) {
@@ -1248,10 +1259,10 @@ $Script:DICTIONARY = @{
 	'x' = 'X-ray'
 	'y' = 'Yankee'
 	'z' = 'Zulu'
-	'1' = 'Digit 1:One'
+	'1' = 'DIGIT 1:One'
 	'2' = 'DIGIT 2:Two'
 	'3' = 'DIGIT 3: Three'
-	'4' = 'Digit 4:Four'
+	'4' = 'DIGIT 4:Four'
 	'5' = 'DIGIT 5: Five'
 	'6' = 'DIGIT 6: Six'
 	'7' = 'DIGIT 7: Seven'

@@ -152,7 +152,7 @@ function Show-MonthCalendar {
         [switch]$StartOnMonday
     )
 
-    $highlightToday = $true
+    $HighlightToday = $true
     $firstDay = Get-Date -Year $Year -Month $Month -Day 1 -Hour 0 -Minute 0 -Second 0
     $daysInMonth = [DateTime]::DaysInMonth($Year, $Month)
     #$monthName = $firstDay.ToString('MMMM yyyy')

@@ -1,6 +1,6 @@
 Inspired by utilities from
 
-https://evanhahn.com/scripts-i-wrote-that-i-use-all-the-time/
+[https://evanhahn.com/scripts-i-wrote-that-i-use-all-the-time/](https://evanhahn.com/scripts-i-wrote-that-i-use-all-the-time/)
 
 ## How these files are used
 

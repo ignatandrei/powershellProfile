@@ -50,7 +50,7 @@ function copyCommand {
         $first = $CommandParts[0]
         if (Test-Path $first -PathType Leaf){
             $content =Get-Content $first
-            $lines.Add($content)
+            $lines.AddRange(($content)
         }
     else{
 
@@ -75,7 +75,7 @@ function copyCommand {
     else {
       Write-Warning "No input to copy. Pipe text or pass args, e.g.: 'npm run start' | copyCommand or: copyCommand npm run start"
     }
-    Write-Host $CommandParts.Count
+    # Write-Host $CommandParts.Count
   }
 }
 

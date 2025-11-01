@@ -3,8 +3,14 @@ function Start-BackgroundProcess {
 		[Parameter(Mandatory=$true, Position=0, ValueFromRemainingArguments=$true)]
 		[string[]]$CommandLine
 	)
-
 	$command = $CommandLine -join ' '
+	
+	#TODO Test this!	
+	# $escapedArgs = $CommandLine | ForEach-Object {
+	# 	"'{0}'" -f ([System.Management.Automation.Language.CodeGeneration]::EscapeSingleQuotedStringContent($_))
+	# }
+	# $command = "& " + ($escapedArgs -join ' ')
+	
 	Write-Host "Starting background process: $command"
 	Start-Process -FilePath pwsh -ArgumentList "-WindowStyle Hidden -Command $command" -WindowStyle Hidden
 }
@@ -22,7 +28,12 @@ function Wait-ForPID {
 		$RealPid = $ProcessOrPID;
 	}
 	else {
-		$RealPid = (Get-Process -Name $ProcessOrPID).Id
+		$process = Get-Process -Name $ProcessOrPID -ErrorAction SilentlyContinue
+		if (-not $process) {
+			Write-Host "Process $ProcessOrPID is not running."
+			return
+		}
+		$RealPid = $process.Id
 	}
 
 	while (Get-Process -Id $RealPid -ErrorAction SilentlyContinue) {
