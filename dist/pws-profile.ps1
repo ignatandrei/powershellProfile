@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2025-11-01 15:12:26 +00:00
+# Generated: 2025-11-04 17:08:33 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -1491,4 +1491,51 @@ function Get-WordsFromDictionary {
 Set-Alias nato Get-WordsFromDictionary
 
 # <<< END: text.ps1
+
+# >>> BEGIN: watch.ps1
+# add code that runs dotnet watch in a function
+function Start-DotNetWatch {
+    param (
+        [CmdletBinding()]
+        [string]$ProjectPath = (Get-Location).Path
+    )
+    Write-Host "Starting dotnet watch project at $ProjectPath..."
+    # find if in current directory there is a .csproj or .fsproj file
+    $projectFile = Get-ChildItem -Path $ProjectPath -Filter *.csproj | Select-Object -First 1
+    if (-not $projectFile) {
+        #find if is an Aspire project
+        $projectsFile = Get-ChildItem -Path $ProjectPath -Filter *.csproj -Recurse 
+        $projectFile = $projectsFile | Where-Object { 
+            $dirProject = $_.DirectoryName
+            #find if in the directory there is a file named AppHost.cs
+            $appHost = Get-ChildItem -Path $dirProject -Filter AppHost.cs -ErrorAction SilentlyContinue 
+            if($appHost) {
+                Write-Host "Found Aspire project file: $($_.FullName)"
+                return $true
+            }
+            return $false
+        } | Select-Object -First 1    
+    }
+    if (-not $projectFile) {
+        Write-Host "Error: No .csproj file found in $ProjectPath or an Aspire project in subdirectories."
+        return
+    }
+    $projectDir = $projectFile.DirectoryName
+    $currentDir = Get-Location
+    if( $projectDir -ne $currentDir.Path) {
+        Push-Location $projectDir
+    }
+    try{
+        dotnet watch run --no-hot-reload
+    }
+    finally {
+        if( $projectDir -ne $currentDir.Path) {
+            Pop-Location
+        }
+    }
+       
+}
+
+Set-Alias -Name dnw -Value Start-DotNetWatch
+# <<< END: watch.ps1
 
