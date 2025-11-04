@@ -1,8 +1,11 @@
 # add code that runs dotnet watch in a function
 function Start-DotNetWatch {
-  
-    Write-Host "Starting dotnet watch  project at $ProjectPath..."
-    # find if in current directory there isStart-DotNetWatch a .csproj or .fsproj file
+    param (
+        [CmdletBinding()]
+        [string]$ProjectPath = (Get-Location).Path
+    )
+    Write-Host "Starting dotnet watch project at $ProjectPath..."
+    # find if in current directory there is a .csproj or .fsproj file
     $projectFile = Get-ChildItem -Path $ProjectPath -Filter *.csproj | Select-Object -First 1
     if (-not $projectFile) {
         #find if is an Aspire project
@@ -18,6 +21,10 @@ function Start-DotNetWatch {
             return $false
         } | Select-Object -First 1    
     }
+    if (-not $projectFile) {
+        Write-Host "Error: No .csproj file found in $ProjectPath or an Aspire project in subdirectories."
+        return
+    }
     $projectDir = $projectFile.DirectoryName
     $currentDir = Get-Location
     if( $projectDir -ne $currentDir.Path) {
@@ -27,7 +34,9 @@ function Start-DotNetWatch {
         dotnet watch run --no-hot-reload
     }
     finally {
-        Pop-Location
+        if( $projectDir -ne $currentDir.Path) {
+            Pop-Location
+        }
     }
        
 }
