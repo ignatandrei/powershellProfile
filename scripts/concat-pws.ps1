@@ -1,5 +1,5 @@
 Param(
-    [string]$SourceFolder = (Join-Path $PSScriptRoot '..' | Join-Path -ChildPath 'src/pws'),
+    [string]$SourceFolder = (Join-Path $PSScriptRoot '..' | Join-Path -ChildPath 'src'),
     [string]$OutFile = (Join-Path $PSScriptRoot '..' | Join-Path -ChildPath 'dist/pws-profile.ps1')
 )
 
@@ -10,7 +10,7 @@ Write-Host "Output file  : $OutFile"
 $null = New-Item -ItemType Directory -Path (Split-Path -Parent $OutFile) -Force
 
 # Resolve files to concatenate (alphabetical by name)
-$files = Get-ChildItem -Path $SourceFolder -Filter '*.ps1' -File | Sort-Object Name
+$files = Get-ChildItem -Path $SourceFolder -Filter '*.ps1' -File -Recurse | Sort-Object Name
 
 if (-not $files) {
     Write-Error "No .ps1 files found in $SourceFolder"
