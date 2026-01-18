@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2025-11-04 17:46:56 +00:00
+# Generated: 2026-01-18 18:51:41 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -1492,6 +1492,16 @@ Set-Alias nato Get-WordsFromDictionary
 
 # <<< END: text.ps1
 
+# >>> BEGIN: updateMe.ps1
+function updateMe() {
+# Ensure the profile directory exists, then download the latest unified profile
+$profileDir = Split-Path -Parent $PROFILE
+if (-not (Test-Path $profileDir)) { New-Item -ItemType Directory -Force -Path $profileDir | Out-Null }
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/ignatandrei/powershellProfile/main/dist/pws-profile.ps1" -OutFile $PROFILE
+}
+
+# <<< END: updateMe.ps1
+
 # >>> BEGIN: watch.ps1
 # add code that runs dotnet watch in a function
 function Start-DotNetWatch {
@@ -1537,6 +1547,11 @@ function Start-DotNetWatch {
 }
 
 Set-Alias -Name dnw -Value Start-DotNetWatch
+
+function dnwr([string]$ProjectPath = (Get-Location).Path   ) {
+    Invoke-Command -ScriptBlock { Start-DotNetWatch  $ProjectPath "--no-restore" }
+}
+
 # <<< END: watch.ps1
 
 # >>> BEGIN: zip.ps1
