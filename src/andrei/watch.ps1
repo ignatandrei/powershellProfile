@@ -42,3 +42,7 @@ function Start-DotNetWatch {
 }
 
 Set-Alias -Name dnw -Value Start-DotNetWatch
+
+function dnwr([string]$ProjectPath = (Get-Location).Path   ) {
+    Invoke-Command -ScriptBlock { Start-DotNetWatch  $ProjectPath "--no-restore" }
+}
