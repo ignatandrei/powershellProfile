@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PowerShell Function Catalog</title>
+  <style>
+    :root {
+      --bg1: #f7f2ea;
+      --bg2: #dbe8f5;
+      --ink: #1b2230;
+      --muted: #5e6778;
+      --card: rgba(255, 255, 255, 0.84);
+      --line: #c9d2df;
+      --accent: #be5a38;
+      --accent-2: #246b8f;
+      --pill: #eef4fb;
+      --shadow: 0 14px 30px rgba(29, 50, 76, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Bahnschrift", "Candara", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(75rem 45rem at -10% -20%, #fff2cf 0%, transparent 55%),
+        radial-gradient(70rem 40rem at 120% 0%, #c9e7ff 0%, transparent 60%),
+        linear-gradient(125deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1100px, 92vw);
+      margin: 2.2rem auto 3rem;
+    }
+
+    header {
+      padding: 1.3rem 0 1.1rem;
+      animation: rise 0.55s ease-out both;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-family: "Rockwell", "Cambria", serif;
+      letter-spacing: 0.02em;
+    }
+
+    .lead {
+      margin: 0.55rem 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .stats {
+      margin-top: 0.8rem;
+      color: #30415d;
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 0.95rem 0.95rem 0.8rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(2px);
+      animation: rise 0.4s ease-out both;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.7rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.08rem;
+      line-height: 1.3;
+      color: #163a58;
+      word-break: break-word;
+    }
+
+    .pill {
+      font-size: 0.78rem;
+      color: #355779;
+      background: var(--pill);
+      border: 1px solid #ccdaea;
+      border-radius: 999px;
+      padding: 0.14rem 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .desc {
+      margin: 0.35rem 0 0.6rem;
+      color: #273147;
+      min-height: 2.3rem;
+    }
+
+    .meta {
+      font-size: 0.78rem;
+      color: #52617a;
+      margin-bottom: 0.55rem;
+    }
+
+    .meta span {
+      color: #1f304d;
+      font-weight: 600;
+    }
+
+    .aliases {
+      margin-bottom: 0.55rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .aliases-label {
+      font-size: 0.78rem;
+      color: #4a5d7a;
+      font-weight: 600;
+    }
+
+    .alias-chip {
+      border: 1px solid #d4deec;
+      background: #f2f7ff;
+      color: #244d78;
+      border-radius: 999px;
+      padding: 0.1rem 0.45rem;
+      font-size: 0.75rem;
+      font-family: "Consolas", "Cascadia Code", monospace;
+    }
+
+    pre {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #d2dae8;
+      background: linear-gradient(160deg, #f6fbff, #eef3fb);
+      padding: 0.6rem 0.7rem;
+      overflow-x: auto;
+      font-size: 0.84rem;
+      color: #2a3850;
+    }
+
+    code {
+      font-family: "Consolas", "Cascadia Code", monospace;
+    }
+
+    @keyframes rise {
+      from {
+        transform: translateY(10px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(1100px, 94vw);
+        margin-top: 1.3rem;
+      }
+
+      .card {
+        padding: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>PowerShell Function Catalog</h1>
+      <p class="lead">All discovered functions from src, sorted alphabetically with a short description, aliases, and a runnable example.</p>
+      <div class="stats"><strong>32</strong> functions generated on <strong>2026-04-09 18:08:15</strong></div>
+    </header>
+    <section class="grid">
+<article class="card" data-name="Convert-VideoToGif">
+  <div class="card-head">
+    <h2>Convert-VideoToGif</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Converts a video file to an animated GIF using ffmpeg.</p>
+  <div class="meta">Defined in <span>src/pws/audioVideoPictures.ps1</span></div>
+  
+  <pre><code>Convert-VideoToGif -InputFile &quot;video.avi&quot;</code></pre>
+</article>
+<article class="card" data-name="Convert-VideoToH264">
+  <div class="card-head">
+    <h2>Convert-VideoToH264</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Converts a video file to H.264 format using ffmpeg.</p>
+  <div class="meta">Defined in <span>src/pws/audioVideoPictures.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">shrinkvid</span></div>
+  <pre><code>Convert-VideoToH264 -InputFile &quot;input.mp4&quot; -OutputFile &quot;output.mp4&quot;</code></pre>
+</article>
+<article class="card" data-name="Convert-VideoToHighQualityMP4">
+  <div class="card-head">
+    <h2>Convert-VideoToHighQualityMP4</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Converts a video file to high-quality H.264 MP4 format using ffmpeg.</p>
+  <div class="meta">Defined in <span>src/pws/audioVideoPictures.ps1</span></div>
+  
+  <pre><code>Convert-VideoToHighQualityMP4 -InputFile &quot;video.avi&quot;</code></pre>
+</article>
+<article class="card" data-name="Convert-VideoToMP4AndGif">
+  <div class="card-head">
+    <h2>Convert-VideoToMP4AndGif</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Converts a video file to both high-quality MP4 and animated GIF.</p>
+  <div class="meta">Defined in <span>src/pws/audioVideoPictures.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">vidconvert</span></div>
+  <pre><code>Convert-VideoToMP4AndGif -InputFile &quot;video.avi&quot;</code></pre>
+</article>
+<article class="card" data-name="copyCommand">
+  <div class="card-head">
+    <h2>copyCommand</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Copies incoming text to the Windows clipboard.</p>
+  <div class="meta">Defined in <span>src/pws/clipboard.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">ccopy</span></div>
+  <pre><code>&#39;npm run start&#39; | copyCommand</code></pre>
+</article>
+<article class="card" data-name="CopyCurDir">
+  <div class="card-head">
+    <h2>CopyCurDir</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Utility function from src/pws/clipboard.ps1.</p>
+  <div class="meta">Defined in <span>src/pws/clipboard.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">ccd</span> <span class="alias-chip">cpwd</span></div>
+  <pre><code>CopyCurDir</code></pre>
+</article>
+<article class="card" data-name="dnwr">
+  <div class="card-head">
+    <h2>dnwr</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Utility function from src/andrei/watch.ps1.</p>
+  <div class="meta">Defined in <span>src/andrei/watch.ps1</span></div>
+  
+  <pre><code>dnwr</code></pre>
+</article>
+<article class="card" data-name="Get-CustomAliasHelpEvanHahn">
+  <div class="card-head">
+    <h2>Get-CustomAliasHelpEvanHahn</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Displays all custom PowerShell profile aliases with descriptions.</p>
+  <div class="meta">Defined in <span>src/pws/help.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">helpEvanHahn</span></div>
+  <pre><code>Get-CustomAliasHelp</code></pre>
+</article>
+<article class="card" data-name="Get-HttpStatusMeaning">
+  <div class="card-head">
+    <h2>Get-HttpStatusMeaning</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Returns the meaning of an HTTP status code</p>
+  <div class="meta">Defined in <span>src/andrei/httpStatus.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">httpstatus</span></div>
+  <pre><code>Get-HttpStatusMeaning 200</code></pre>
+</article>
+<article class="card" data-name="Get-UrlParts">
+  <div class="card-head">
+    <h2>Get-UrlParts</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Parses a URL into its component parts</p>
+  <div class="meta">Defined in <span>src/pws/internet.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">parseurl</span> <span class="alias-chip">Url</span></div>
+  <pre><code>Get-UrlParts &quot;https://www.example.com:8080/path/to/page?param1=value1&amp;param2=value2#section&quot;</code></pre>
+</article>
+<article class="card" data-name="Get-WordsFromDictionary">
+  <div class="card-head">
+    <h2>Get-WordsFromDictionary</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Get action for WordsFromDictionary.</p>
+  <div class="meta">Defined in <span>src/pws/text.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">nato</span></div>
+  <pre><code>Get-WordsFromDictionary -InputString &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="GetISoDate">
+  <div class="card-head">
+    <h2>GetISoDate</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Utility function from src/pws/datesAndTimes.ps1.</p>
+  <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">hoy</span></div>
+  <pre><code>GetISoDate</code></pre>
+</article>
+<article class="card" data-name="GetISoDateTime">
+  <div class="card-head">
+    <h2>GetISoDateTime</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Utility function from src/pws/datesAndTimes.ps1.</p>
+  <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">hoyt</span></div>
+  <pre><code>GetISoDateTime</code></pre>
+</article>
+<article class="card" data-name="Invoke-DotnetServe">
+  <div class="card-head">
+    <h2>Invoke-DotnetServe</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Installs dotnet-serve globally and serves a file or directory</p>
+  <div class="meta">Defined in <span>src/pws/internet.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">serve</span> <span class="alias-chip">serveit</span></div>
+  <pre><code>Invoke-DotnetServe &quot;C:\path\to\file.html&quot;</code></pre>
+</article>
+<article class="card" data-name="IsoDateTimeAsVersion">
+  <div class="card-head">
+    <h2>IsoDateTimeAsVersion</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Utility function from src/pws/datesAndTimes.ps1.</p>
+  <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">hoyv</span></div>
+  <pre><code>IsoDateTimeAsVersion</code></pre>
+</article>
+<article class="card" data-name="MakeDirCD">
+  <div class="card-head">
+    <h2>MakeDirCD</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Utility function from src/pws/file.ps1.</p>
+  <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">mkcd</span></div>
+  <pre><code>MakeDirCD -Path &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="NewTempDirectory">
+  <div class="card-head">
+    <h2>NewTempDirectory</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Creates a new temporary directory.</p>
+  <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">tempe</span></div>
+  <pre><code>$tempDir = New-TempDirectory</code></pre>
+</article>
+<article class="card" data-name="Set-InternetConnectivity">
+  <div class="card-head">
+    <h2>Set-InternetConnectivity</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Enables or disables network adapters to control internet connectivity</p>
+  <div class="meta">Defined in <span>src/pws/internet.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">inet</span></div>
+  <pre><code>Set-InternetConnectivity -State Off</code></pre>
+</article>
+<article class="card" data-name="Set-WindowsMode">
+  <div class="card-head">
+    <h2>Set-WindowsMode</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Set action for WindowsMode.</p>
+  <div class="meta">Defined in <span>src/pws/system.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">theme</span></div>
+  <pre><code>Set-WindowsMode -Mode &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Show-BalloonNotification">
+  <div class="card-head">
+    <h2>Show-BalloonNotification</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Show action for BalloonNotification.</p>
+  <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
+  
+  <pre><code>Show-BalloonNotification -Title &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Show-MonthCalendar">
+  <div class="card-head">
+    <h2>Show-MonthCalendar</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Prints a text calendar for a month.</p>
+  <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">cal</span> <span class="alias-chip">rn</span></div>
+  <pre><code>Show-MonthCalendar</code></pre>
+</article>
+<article class="card" data-name="Split-PathToLines">
+  <div class="card-head">
+    <h2>Split-PathToLines</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Split action for PathToLines.</p>
+  <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">prettypath</span></div>
+  <pre><code>Split-PathToLines -Path &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Start-BackgroundProcess">
+  <div class="card-head">
+    <h2>Start-BackgroundProcess</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Start action for BackgroundProcess.</p>
+  <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">bb</span></div>
+  <pre><code>Start-BackgroundProcess -CommandLine &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Start-DotNetWatch">
+  <div class="card-head">
+    <h2>Start-DotNetWatch</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Start action for DotNetWatch.</p>
+  <div class="meta">Defined in <span>src/andrei/watch.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">dnw</span></div>
+  <pre><code>Start-DotNetWatch -ProjectPath &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Start-MinuteTimer">
+  <div class="card-head">
+    <h2>Start-MinuteTimer</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Starts a simple countdown timer for the specified number of minutes.</p>
+  <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">timer</span></div>
+  <pre><code>Start-MinuteTimer -Minutes &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Start-TempNotepad">
+  <div class="card-head">
+    <h2>Start-TempNotepad</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Start action for TempNotepad.</p>
+  <div class="meta">Defined in <span>src/pws/text.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">n</span></div>
+  <pre><code>Start-TempNotepad -FileName &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Start-Unzip">
+  <div class="card-head">
+    <h2>Start-Unzip</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Start action for Unzip.</p>
+  <div class="meta">Defined in <span>src/andrei/zip.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">uz</span></div>
+  <pre><code>Start-Unzip -ProjectPath &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Stop-ProcessWithRetry">
+  <div class="card-head">
+    <h2>Stop-ProcessWithRetry</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Stop action for ProcessWithRetry.</p>
+  <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">murder</span></div>
+  <pre><code>Stop-ProcessWithRetry -ProcessOrPID &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Toggle-InternetConnectivity">
+  <div class="card-head">
+    <h2>Toggle-InternetConnectivity</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Toggles network adapters on or off based on current state</p>
+  <div class="meta">Defined in <span>src/pws/internet.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">tinet</span> <span class="alias-chip">toggle-internet</span></div>
+  <pre><code>Toggle-InternetConnectivity</code></pre>
+</article>
+<article class="card" data-name="Toggle-InternetConnectivity2">
+  <div class="card-head">
+    <h2>Toggle-InternetConnectivity2</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Toggle action for InternetConnectivity2.</p>
+  <div class="meta">Defined in <span>src/pws/internet.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">tinet2</span> <span class="alias-chip">toggle-internet2</span></div>
+  <pre><code>Toggle-InternetConnectivity2</code></pre>
+</article>
+<article class="card" data-name="updateMe">
+  <div class="card-head">
+    <h2>updateMe</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Utility function from src/andrei/updateMe.ps1.</p>
+  <div class="meta">Defined in <span>src/andrei/updateMe.ps1</span></div>
+  
+  <pre><code>updateMe</code></pre>
+</article>
+<article class="card" data-name="Wait-ForPID">
+  <div class="card-head">
+    <h2>Wait-ForPID</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Wait action for ForPID.</p>
+  <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">waitfor</span> <span class="alias-chip">waitpid</span></div>
+  <pre><code>Wait-ForPID -ProcessOrPID &lt;value&gt;</code></pre>
+</article>
+    </section>
+  </div>
+</body>
+</html>
