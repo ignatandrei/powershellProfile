@@ -232,8 +232,8 @@ function New-BranchWorkspace {
 	}
 
 	Write-Host "Launching github desktop in the new workspace..." -ForegroundColor Cyan
-	Start-Process "github" -ArgumentList ".", $targetFolder
-	Write-Host "tmux -s $BranchName" -ForegroundColor Cyan
+	Start-Process "github" -ArgumentList $targetFolder
+	Write-Host "tmux new -s $BranchName" -ForegroundColor Cyan
 	Write-Host "sbx run copilot"
 
 	Set-Location $targetFolder
@@ -244,6 +244,9 @@ Set-Alias -Name branchws -Value New-BranchWorkspace
 
 #usage New-BranchWorkspace myFeature
 #usage branchws myFeature
+
+
+
 
 
 
