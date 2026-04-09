@@ -203,7 +203,10 @@ function New-BranchWorkspace {
 
 	# Build target folder one level above the current directory
 	$parentFolder = Split-Path -Path (Get-Location).Path -Parent
-	$targetFolder = Join-Path $parentFolder ("{0}_{1}" -f $gitRepoName, $BranchName)
+	$invalidFileNameChars = [System.IO.Path]::GetInvalidFileNameChars() + [char[]]('/\')
+	$escapedInvalidFileNameChars = [regex]::Escape((-join $invalidFileNameChars))
+	$safeBranchName = $BranchName -replace "[{0}]" -f $escapedInvalidFileNameChars, "_"
+	$targetFolder = Join-Path $parentFolder ("{0}_{1}" -f $gitRepoName, $safeBranchName)
 
 	Write-Host "Creating workspace folder: $targetFolder" -ForegroundColor Cyan
 	New-Item -ItemType Directory -Force -Path $targetFolder | Out-Null
