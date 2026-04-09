@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-09 17:16:01 +00:00
+# Generated: 2026-04-09 17:38:35 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -607,32 +607,33 @@ function New-BranchWorkspace {
 		return
 	}
 
-	Push-Location $targetFolder
-
-	try {
-		# Check whether the branch already exists on the remote
-		$remoteBranch = git ls-remote --heads origin $BranchName 2>$null
-		if ($remoteBranch) {
-			Write-Host "Branch '$BranchName' exists on remote. Checking out..." -ForegroundColor Green
-			git checkout $BranchName
-		}
-		else {
-			Write-Host "Branch '$BranchName' does not exist. Creating..." -ForegroundColor Yellow
-			git checkout -b $BranchName
-		}
-
-		Write-Host ""
-		Write-Host "sbx run copilot"
+	# Check whether the branch already exists on the remote
+	$remoteBranch = git -C $targetFolder ls-remote --heads origin $BranchName 2>$null
+	if ($remoteBranch) {
+		Write-Host "Branch '$BranchName' exists on remote. Checking out..." -ForegroundColor Green
+		git -C $targetFolder checkout $BranchName
 	}
-	finally {
-		Pop-Location
+	else {
+		Write-Host "Branch '$BranchName' does not exist. Creating..." -ForegroundColor Yellow
+		git -C $targetFolder checkout -b $BranchName
 	}
+
+	Write-Host "Launching github desktop in the new workspace..." -ForegroundColor Cyan
+	Start-Process "github" -ArgumentList ".", $targetFolder
+	Write-Host "tmux -s $BranchName" -ForegroundColor Cyan
+	Write-Host "sbx run copilot"
+
+	Set-Location $targetFolder
+
 }
 
 Set-Alias -Name branchws -Value New-BranchWorkspace
 
 #usage New-BranchWorkspace myFeature
 #usage branchws myFeature
+
+
+
 
 
 
