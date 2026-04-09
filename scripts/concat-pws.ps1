@@ -33,6 +33,27 @@ $header = @(
     ''
 )
 
+$generatedHelpers = @'
+function Show-ProfileHelpHtml {
+    [CmdletBinding()]
+    param(
+        [string]$Url = 'https://ignatandrei.github.io/powershellProfile/functions.html'
+    )
+
+    $localHelpPath = Join-Path -Path $PSScriptRoot -ChildPath '../docs/functions.html'
+
+    if (Test-Path -LiteralPath $localHelpPath) {
+        Start-Process -FilePath $localHelpPath
+        return
+    }
+
+    Start-Process -FilePath $Url
+}
+
+Set-Alias profilehelp Show-ProfileHelpHtml
+Write-Host "Run 'profilehelp' to view the profile documentation."
+'@
+
 $content = @()
 $content += $header
 
@@ -43,6 +64,11 @@ foreach ($f in $files) {
     $content += "# <<< END: $name"
     $content += ''
 }
+
+$content += '# >>> BEGIN: generated-help.ps1'
+$content += $generatedHelpers
+$content += '# <<< END: generated-help.ps1'
+$content += ''
 
 # Write with UTF-8 encoding
 $content | Set-Content -LiteralPath $OutFile -Encoding utf8

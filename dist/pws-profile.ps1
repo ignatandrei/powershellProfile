@@ -1,7 +1,7 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-09 14:58:55 +00:00
-# Repository: ignatandrei/powershellProfile
+# Generated: 2026-04-09 18:16:15 +03:00
+# Repository: (local run)
 # Source folder: src/pws
 # Files concatenated in alphabetical order
 # ============================================================================
@@ -1599,4 +1599,24 @@ function Start-Unzip {
 
 Set-Alias -Name uz -Value Start-Unzip
 # <<< END: zip.ps1
+
+# >>> BEGIN: generated-help.ps1
+function Show-ProfileHelpHtml {
+    [CmdletBinding()]
+    param(
+        [string]$Url = 'https://raw.githubusercontent.com/ignatandrei/powershellProfile/main/docs/functions.html'
+    )
+
+    $localHelpPath = Join-Path -Path $PSScriptRoot -ChildPath '../docs/functions.html'
+
+    if (Test-Path -LiteralPath $localHelpPath) {
+        Start-Process -FilePath $localHelpPath
+        return
+    }
+
+    Start-Process -FilePath $Url
+}
+
+Set-Alias profilehelp Show-ProfileHelpHtml
+# <<< END: generated-help.ps1
 
