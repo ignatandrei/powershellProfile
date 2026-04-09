@@ -29,3 +29,19 @@ pwsh -NoProfile -File ./scripts/concat-pws.ps1
 ```
 
 The output will be written to `dist/pws-profile.ps1`.
+
+## Function Catalog (HTML)
+
+For a quick overview of all available functions (sorted by name), see:
+
+- [docs/functions.html](docs/functions.html)
+
+It is generated from all PowerShell scripts under `src` and includes:
+- a short description for each function
+- one usage example per function
+
+Regenerate it after updating scripts:
+
+```powershell
+pwsh -NoProfile -File ./scripts/generate-functions-html.ps1
+```
