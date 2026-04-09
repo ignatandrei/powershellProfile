@@ -133,4 +133,4 @@ function Get-CustomAliasHelpEvanHahn {
 }
 
 Set-Alias helpEvanHahn Get-CustomAliasHelpEvanHahn
-helpEvanHahn
+# helpEvanHahn

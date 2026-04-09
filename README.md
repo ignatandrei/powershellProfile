@@ -34,7 +34,7 @@ The output will be written to `dist/pws-profile.ps1`.
 
 For a quick overview of all available functions (sorted by name), see:
 
-- [docs/functions.html](docs/functions.html)
+- [docs/functions.html](https://ignatandrei.github.io/powershellProfile/functions.html)
 
 It is generated from all PowerShell scripts under `src` and includes:
 - a short description for each function
@@ -44,4 +44,12 @@ Regenerate it after updating scripts:
 
 ```powershell
 pwsh -NoProfile -File ./scripts/generate-functions-html.ps1
+```
+
+## UpdateMe
+
+Once it is downloaded, use updateMe function for future deployments.
+
+```powershell
+pwsh updateMe
 ```
