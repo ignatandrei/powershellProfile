@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-01-18 18:51:41 +00:00
+# Generated: 2026-04-09 14:58:55 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -1497,6 +1497,15 @@ function updateMe() {
 # Ensure the profile directory exists, then download the latest unified profile
 $profileDir = Split-Path -Parent $PROFILE
 if (-not (Test-Path $profileDir)) { New-Item -ItemType Directory -Force -Path $profileDir | Out-Null }
+
+# Backup existing profile if it exists
+if (Test-Path $PROFILE) {
+    $timestamp = Get-Date -Format "yyyyMMddHHmmss"
+    $backupPath = [System.IO.Path]::Combine($profileDir, [System.IO.Path]::GetFileNameWithoutExtension($PROFILE) + ".$timestamp" + [System.IO.Path]::GetExtension($PROFILE))
+    Copy-Item -Path $PROFILE -Destination $backupPath
+    Write-Host "Backup created: $backupPath"
+}
+
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/ignatandrei/powershellProfile/main/dist/pws-profile.ps1" -OutFile $PROFILE
 }
 
