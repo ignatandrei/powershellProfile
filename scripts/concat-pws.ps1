@@ -40,13 +40,6 @@ function Show-ProfileHelpHtml {
         [string]$Url = 'https://ignatandrei.github.io/powershellProfile/functions.html'
     )
 
-    $localHelpPath = Join-Path -Path $PSScriptRoot -ChildPath '../docs/functions.html'
-
-    if (Test-Path -LiteralPath $localHelpPath) {
-        Start-Process -FilePath $localHelpPath
-        return
-    }
-
     Start-Process -FilePath $Url
 }
 
