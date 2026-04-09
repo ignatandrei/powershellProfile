@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-09 16:22:37 +00:00
+# Generated: 2026-04-09 16:28:40 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -788,7 +788,7 @@ function Get-CustomAliasHelpEvanHahn {
 }
 
 Set-Alias helpEvanHahn Get-CustomAliasHelpEvanHahn
-helpEvanHahn
+# helpEvanHahn
 # <<< END: help.ps1
 
 # >>> BEGIN: httpStatus.ps1
