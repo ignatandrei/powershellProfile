@@ -90,7 +90,7 @@ function Get-HttpStatusMeaning {
     Write-Output "$Code - $meaning"
 }
 
-Set-Alias httpstatus Get-HttpStatusMeaning
+Set-Alias -Name httpstatus -Value Get-HttpStatusMeaning
 
 #usage Get-HttpStatusMeaning 200
 #usage httpstatus 404
