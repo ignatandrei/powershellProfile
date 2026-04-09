@@ -1,7 +1,7 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-09 18:16:15 +03:00
-# Repository: (local run)
+# Generated: 2026-04-09 15:27:55 +00:00
+# Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
 # ============================================================================
@@ -1606,10 +1606,11 @@ function Show-ProfileHelpHtml {
     param(
         [string]$Url = 'https://ignatandrei.github.io/powershellProfile/functions.html'
     )
-    
+
     Start-Process -FilePath $Url
 }
 
 Set-Alias profilehelp Show-ProfileHelpHtml
+Write-Host "Run 'profilehelp' to view the profile documentation."
 # <<< END: generated-help.ps1
 
