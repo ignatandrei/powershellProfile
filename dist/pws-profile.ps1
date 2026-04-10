@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-09 17:38:35 +00:00
+# Generated: 2026-04-10 05:32:51 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -619,8 +619,8 @@ function New-BranchWorkspace {
 	}
 
 	Write-Host "Launching github desktop in the new workspace..." -ForegroundColor Cyan
-	Start-Process "github" -ArgumentList ".", $targetFolder
-	Write-Host "tmux -s $BranchName" -ForegroundColor Cyan
+	Start-Process "github" -ArgumentList $targetFolder
+	Write-Host "tmux new -s $BranchName" -ForegroundColor Cyan
 	Write-Host "sbx run copilot"
 
 	Set-Location $targetFolder
@@ -631,6 +631,9 @@ Set-Alias -Name branchws -Value New-BranchWorkspace
 
 #usage New-BranchWorkspace myFeature
 #usage branchws myFeature
+
+
+
 
 
 
