@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-10 05:32:51 +00:00
+# Generated: 2026-04-14 18:50:13 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -865,6 +865,137 @@ function MakeDirCD {
 
 Set-Alias mkcd MakeDirCD
 # usage mkcd Andrei
+
+function Get-FolderCaseSensitive {
+    <#
+    .SYNOPSIS
+    Queries the case-sensitivity setting of a directory.
+
+    .DESCRIPTION
+    Uses fsutil.exe to report whether case sensitivity is enabled or disabled
+    for the specified directory (Windows 10 1803+ feature).
+
+    .PARAMETER Path
+    The directory path to query. Defaults to the current directory.
+
+    .EXAMPLE
+    Get-FolderCaseSensitive
+    Checks case sensitivity for the current directory.
+
+    .EXAMPLE
+    Get-FolderCaseSensitive -Path "C:\MyFolder"
+    Checks case sensitivity for C:\MyFolder.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0)]
+        [string]$Path = (Get-Location).Path
+    )
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
+        Write-Error "Path '$Path' does not exist or is not a directory."
+        return
+    }
+
+    $output = & fsutil.exe file queryCaseSensitiveInfo $Path 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "fsutil failed for '$Path': $output"
+        return
+    }
+    Write-Output $output
+}
+
+Set-Alias casestatus Get-FolderCaseSensitive
+# Usage: casestatus
+# Usage: casestatus -Path "C:\MyFolder"
+
+function Enable-FolderCaseSensitive {
+    <#
+    .SYNOPSIS
+    Enables case sensitivity for a directory.
+
+    .DESCRIPTION
+    Uses fsutil.exe to enable per-directory case sensitivity on Windows 10 1803+.
+    New files and subdirectories created inside the folder will be treated as
+    case-sensitive. Requires elevated (Administrator) privileges.
+
+    .PARAMETER Path
+    The directory path to modify. Defaults to the current directory.
+
+    .EXAMPLE
+    Enable-FolderCaseSensitive
+    Enables case sensitivity for the current directory.
+
+    .EXAMPLE
+    Enable-FolderCaseSensitive -Path "C:\MyFolder"
+    Enables case sensitivity for C:\MyFolder.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0)]
+        [string]$Path = (Get-Location).Path
+    )
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
+        Write-Error "Path '$Path' does not exist or is not a directory."
+        return
+    }
+
+    $output = & fsutil.exe file setCaseSensitiveInfo $Path enable 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "fsutil failed for '$Path': $output"
+        return
+    }
+    Write-Output $output
+}
+
+Set-Alias caseon Enable-FolderCaseSensitive
+# Usage: caseon
+# Usage: caseon -Path "C:\MyFolder"
+
+function Disable-FolderCaseSensitive {
+    <#
+    .SYNOPSIS
+    Disables case sensitivity for a directory.
+
+    .DESCRIPTION
+    Uses fsutil.exe to disable per-directory case sensitivity on Windows 10 1803+.
+    Requires elevated (Administrator) privileges.
+
+    .PARAMETER Path
+    The directory path to modify. Defaults to the current directory.
+
+    .EXAMPLE
+    Disable-FolderCaseSensitive
+    Disables case sensitivity for the current directory.
+
+    .EXAMPLE
+    Disable-FolderCaseSensitive -Path "C:\MyFolder"
+    Disables case sensitivity for C:\MyFolder.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0)]
+        [string]$Path = (Get-Location).Path
+    )
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
+        Write-Error "Path '$Path' does not exist or is not a directory."
+        return
+    }
+
+    $output = & fsutil.exe file setCaseSensitiveInfo $Path disable 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "fsutil failed for '$Path': $output"
+        return
+    }
+    Write-Output $output
+}
+
+Set-Alias caseoff Disable-FolderCaseSensitive
+# Usage: caseoff
+# Usage: caseoff -Path "C:\MyFolder"
+
 function NewTempDirectory {
     <#
     .SYNOPSIS
