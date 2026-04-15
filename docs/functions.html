@@ -188,7 +188,7 @@
     <header>
       <h1>PowerShell Function Catalog</h1>
       <p class="lead">All discovered functions from src, sorted alphabetically with a short description, aliases, and a runnable example.</p>
-      <div class="stats"><strong>38</strong> functions generated on <strong>2026-04-09 20:15:22</strong></div>
+      <div class="stats"><strong>43</strong> functions generated on <strong>2026-04-15 04:02:11</strong></div>
     </header>
     <section class="grid">
 <article class="card" data-name="Convert-VideoToGif">
@@ -246,20 +246,40 @@
     <h2>CopyCurDir</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Utility function from src/pws/clipboard.ps1.</p>
+  <p class="desc">Copies the current directory path to the Windows clipboard.</p>
   <div class="meta">Defined in <span>src/pws/clipboard.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">ccd</span> <span class="alias-chip">cpwd</span></div>
   <pre><code>CopyCurDir</code></pre>
+</article>
+<article class="card" data-name="Disable-FolderCaseSensitive">
+  <div class="card-head">
+    <h2>Disable-FolderCaseSensitive</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Disables case sensitivity for a directory.</p>
+  <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">caseoff</span></div>
+  <pre><code>Disable-FolderCaseSensitive</code></pre>
 </article>
 <article class="card" data-name="dnwr">
   <div class="card-head">
     <h2>dnwr</h2>
     <span class="pill">andrei</span>
   </div>
-  <p class="desc">Utility function from src/andrei/watch.ps1.</p>
+  <p class="desc">Runs dotnet watch run with --no-restore for the current or specified .NET project.</p>
   <div class="meta">Defined in <span>src/andrei/watch.ps1</span></div>
   
   <pre><code>dnwr</code></pre>
+</article>
+<article class="card" data-name="Enable-FolderCaseSensitive">
+  <div class="card-head">
+    <h2>Enable-FolderCaseSensitive</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Enables case sensitivity for a directory.</p>
+  <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">caseon</span></div>
+  <pre><code>Enable-FolderCaseSensitive</code></pre>
 </article>
 <article class="card" data-name="Get-CurrentGitName">
   <div class="card-head">
@@ -291,6 +311,16 @@
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">helpEvanHahn</span></div>
   <pre><code>Get-CustomAliasHelp</code></pre>
 </article>
+<article class="card" data-name="Get-FolderCaseSensitive">
+  <div class="card-head">
+    <h2>Get-FolderCaseSensitive</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Queries the case-sensitivity setting of a directory.</p>
+  <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">casestatus</span></div>
+  <pre><code>Get-FolderCaseSensitive</code></pre>
+</article>
 <article class="card" data-name="Get-HttpStatusMeaning">
   <div class="card-head">
     <h2>Get-HttpStatusMeaning</h2>
@@ -316,17 +346,17 @@
     <h2>Get-WordsFromDictionary</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Get action for WordsFromDictionary.</p>
+  <p class="desc">Parses a string and returns the corresponding words from a dictionary (NATO phonetic by default).</p>
   <div class="meta">Defined in <span>src/pws/text.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">nato</span></div>
-  <pre><code>Get-WordsFromDictionary -InputString &lt;value&gt;</code></pre>
+  <pre><code>Get-WordsFromDictionary -InputString &quot;abc&quot;</code></pre>
 </article>
 <article class="card" data-name="GetISoDate">
   <div class="card-head">
     <h2>GetISoDate</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Utility function from src/pws/datesAndTimes.ps1.</p>
+  <p class="desc">Returns the current date in ISO 8601 format (yyyy-MM-dd).</p>
   <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">hoy</span></div>
   <pre><code>GetISoDate</code></pre>
@@ -336,7 +366,7 @@
     <h2>GetISoDateTime</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Utility function from src/pws/datesAndTimes.ps1.</p>
+  <p class="desc">Returns the current date and time in ISO 8601 compact format (yyyyMMddTHHmmss).</p>
   <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">hoyt</span></div>
   <pre><code>GetISoDateTime</code></pre>
@@ -381,25 +411,45 @@
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">serve</span> <span class="alias-chip">serveit</span></div>
   <pre><code>Invoke-DotnetServe &quot;C:\path\to\file.html&quot;</code></pre>
 </article>
+<article class="card" data-name="Invoke-FsutilCommand">
+  <div class="card-head">
+    <h2>Invoke-FsutilCommand</h2>
+    <span class="pill">pws</span>
+  </div>
+  <p class="desc">Executes fsutil.exe with the given arguments, using sudo when not running as Administrator.</p>
+  <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
+  
+  <pre><code>Invoke-FsutilCommand -Arguments @(&#39;file&#39;, &#39;queryCaseSensitiveInfo&#39;, &#39;C:\MyFolder&#39;)</code></pre>
+</article>
 <article class="card" data-name="IsoDateTimeAsVersion">
   <div class="card-head">
     <h2>IsoDateTimeAsVersion</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Utility function from src/pws/datesAndTimes.ps1.</p>
+  <p class="desc">Returns the current date and time as a four-part version number (1.yyyy.MMdd.HHmm).</p>
   <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">hoyv</span></div>
   <pre><code>IsoDateTimeAsVersion</code></pre>
+</article>
+<article class="card" data-name="MakeDefault">
+  <div class="card-head">
+    <h2>MakeDefault</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Configures recommended default Windows Explorer and security settings.</p>
+  <div class="meta">Defined in <span>src/andrei/MyWindowsUpdates.ps1</span></div>
+  
+  <pre><code>MakeDefault</code></pre>
 </article>
 <article class="card" data-name="MakeDirCD">
   <div class="card-head">
     <h2>MakeDirCD</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Utility function from src/pws/file.ps1.</p>
+  <p class="desc">Creates a directory and changes the current location to it.</p>
   <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">mkcd</span></div>
-  <pre><code>MakeDirCD -Path &lt;value&gt;</code></pre>
+  <pre><code>MakeDirCD -Path &quot;MyNewFolder&quot;</code></pre>
 </article>
 <article class="card" data-name="New-BranchWorkspace">
   <div class="card-head">
@@ -436,20 +486,20 @@
     <h2>Set-WindowsMode</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Set action for WindowsMode.</p>
+  <p class="desc">Sets Windows to Dark or Light mode by writing to the registry theme settings.</p>
   <div class="meta">Defined in <span>src/pws/system.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">theme</span></div>
-  <pre><code>Set-WindowsMode -Mode &lt;value&gt;</code></pre>
+  <pre><code>Set-WindowsMode -Mode Dark</code></pre>
 </article>
 <article class="card" data-name="Show-BalloonNotification">
   <div class="card-head">
     <h2>Show-BalloonNotification</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Show action for BalloonNotification.</p>
+  <p class="desc">Displays a Windows system tray balloon notification.</p>
   <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
   
-  <pre><code>Show-BalloonNotification -Title &lt;value&gt;</code></pre>
+  <pre><code>Show-BalloonNotification -Title &quot;Done&quot; -Message &quot;Build completed successfully!&quot;</code></pre>
 </article>
 <article class="card" data-name="Show-MonthCalendar">
   <div class="card-head">
@@ -466,30 +516,30 @@
     <h2>Split-PathToLines</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Split action for PathToLines.</p>
+  <p class="desc">Splits a file path into individual segments, printing each on its own line.</p>
   <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">prettypath</span></div>
-  <pre><code>Split-PathToLines -Path &lt;value&gt;</code></pre>
+  <pre><code>Split-PathToLines -Path &quot;C:\Users\me\Documents&quot;</code></pre>
 </article>
 <article class="card" data-name="Start-BackgroundProcess">
   <div class="card-head">
     <h2>Start-BackgroundProcess</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Start action for BackgroundProcess.</p>
+  <p class="desc">Starts a command as a hidden background PowerShell process.</p>
   <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">bb</span></div>
-  <pre><code>Start-BackgroundProcess -CommandLine &lt;value&gt;</code></pre>
+  <pre><code>Start-BackgroundProcess notepad</code></pre>
 </article>
 <article class="card" data-name="Start-DotNetWatch">
   <div class="card-head">
     <h2>Start-DotNetWatch</h2>
     <span class="pill">andrei</span>
   </div>
-  <p class="desc">Start action for DotNetWatch.</p>
+  <p class="desc">Runs dotnet watch run for the nearest .csproj project, including Aspire AppHost projects.</p>
   <div class="meta">Defined in <span>src/andrei/watch.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">dnw</span></div>
-  <pre><code>Start-DotNetWatch -ProjectPath &lt;value&gt;</code></pre>
+  <pre><code>Start-DotNetWatch</code></pre>
 </article>
 <article class="card" data-name="Start-MinuteTimer">
   <div class="card-head">
@@ -499,37 +549,37 @@
   <p class="desc">Starts a simple countdown timer for the specified number of minutes.</p>
   <div class="meta">Defined in <span>src/pws/datesAndTimes.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">timer</span></div>
-  <pre><code>Start-MinuteTimer -Minutes &lt;value&gt;</code></pre>
+  <pre><code>Start-MinuteTimer -Minutes 5</code></pre>
 </article>
 <article class="card" data-name="Start-TempNotepad">
   <div class="card-head">
     <h2>Start-TempNotepad</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Start action for TempNotepad.</p>
+  <p class="desc">Starts Notepad with a new temporary text file in the user&#39;s temp folder.</p>
   <div class="meta">Defined in <span>src/pws/text.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">n</span></div>
-  <pre><code>Start-TempNotepad -FileName &lt;value&gt;</code></pre>
+  <pre><code>Start-TempNotepad</code></pre>
 </article>
 <article class="card" data-name="Start-Unzip">
   <div class="card-head">
     <h2>Start-Unzip</h2>
     <span class="pill">andrei</span>
   </div>
-  <p class="desc">Start action for Unzip.</p>
+  <p class="desc">Extracts all zip files in the specified directory into a destination folder.</p>
   <div class="meta">Defined in <span>src/andrei/zip.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">uz</span></div>
-  <pre><code>Start-Unzip -ProjectPath &lt;value&gt;</code></pre>
+  <pre><code>Start-Unzip</code></pre>
 </article>
 <article class="card" data-name="Stop-ProcessWithRetry">
   <div class="card-head">
     <h2>Stop-ProcessWithRetry</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Stop action for ProcessWithRetry.</p>
+  <p class="desc">Kills a process by PID or name, force-killing it if it does not stop within 10 seconds.</p>
   <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">murder</span></div>
-  <pre><code>Stop-ProcessWithRetry -ProcessOrPID &lt;value&gt;</code></pre>
+  <pre><code>Stop-ProcessWithRetry -ProcessOrPID notepad</code></pre>
 </article>
 <article class="card" data-name="Toggle-InternetConnectivity">
   <div class="card-head">
@@ -546,7 +596,7 @@
     <h2>Toggle-InternetConnectivity2</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Toggle action for InternetConnectivity2.</p>
+  <p class="desc">Toggles network adapters off, waits 10 seconds, then toggles them back on.</p>
   <div class="meta">Defined in <span>src/pws/internet.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">tinet2</span> <span class="alias-chip">toggle-internet2</span></div>
   <pre><code>Toggle-InternetConnectivity2</code></pre>
@@ -556,7 +606,7 @@
     <h2>updateMe</h2>
     <span class="pill">andrei</span>
   </div>
-  <p class="desc">Utility function from src/andrei/updateMe.ps1.</p>
+  <p class="desc">Downloads the latest PowerShell profile from GitHub and replaces the current profile.</p>
   <div class="meta">Defined in <span>src/andrei/updateMe.ps1</span></div>
   
   <pre><code>updateMe</code></pre>
@@ -566,10 +616,10 @@
     <h2>Wait-ForPID</h2>
     <span class="pill">pws</span>
   </div>
-  <p class="desc">Wait action for ForPID.</p>
+  <p class="desc">Waits until a process specified by PID or name has exited.</p>
   <div class="meta">Defined in <span>src/pws/processManagement.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">waitfor</span> <span class="alias-chip">waitpid</span></div>
-  <pre><code>Wait-ForPID -ProcessOrPID &lt;value&gt;</code></pre>
+  <pre><code>Wait-ForPID -ProcessOrPID 1234</code></pre>
 </article>
     </section>
   </div>

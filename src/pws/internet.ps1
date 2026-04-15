@@ -195,6 +195,23 @@ Set-Alias tinet Toggle-InternetConnectivity
 #usage tinet
 
 function Toggle-InternetConnectivity2 {
+    <#
+    .SYNOPSIS
+    Toggles network adapters off, waits 10 seconds, then toggles them back on.
+
+    .DESCRIPTION
+    Calls Toggle-InternetConnectivity to disable network adapters, waits 10 seconds,
+    then calls Toggle-InternetConnectivity again to re-enable them. Useful for
+    quickly resetting network connectivity.
+
+    .EXAMPLE
+    Toggle-InternetConnectivity2
+    Disables network adapters, waits 10 s, then re-enables them.
+
+    .EXAMPLE
+    tinet2
+    Uses the alias to perform the network reset cycle.
+    #>
     Toggle-InternetConnectivity
     Write-Host "Waiting 10 seconds"
     Start-Sleep  -Seconds 10

@@ -1,12 +1,36 @@
 function GetISoDate {
+    <#
+    .SYNOPSIS
+    Returns the current date in ISO 8601 format (yyyy-MM-dd).
+
+    .EXAMPLE
+    GetISoDate
+    Returns today's date, for example: 2025-04-15
+    #>
     # Returns the current date and time in ISO 8601 format
     return (Get-Date).ToString("yyyy-MM-dd")
 }
 function GetISoDateTime {
+    <#
+    .SYNOPSIS
+    Returns the current date and time in ISO 8601 compact format (yyyyMMddTHHmmss).
+
+    .EXAMPLE
+    GetISoDateTime
+    Returns the current timestamp, for example: 20250415T103045
+    #>
     # Returns the current date and time in ISO 8601 format
     return (Get-Date).ToString("yyyyMMddTHHmmss")
 }
 function IsoDateTimeAsVersion {
+    <#
+    .SYNOPSIS
+    Returns the current date and time as a four-part version number (1.yyyy.MMdd.HHmm).
+
+    .EXAMPLE
+    IsoDateTimeAsVersion
+    Returns a version string, for example: 1.2025.0415.1030
+    #>
     # Returns the current date and time in ISO 8601 format
     return (Get-Date).ToString("1.yyyy.MMdd.HHmm")
 }
@@ -38,6 +62,10 @@ function Start-MinuteTimer {
         Press Ctrl+C to interrupt the timer early.
         Use -PlaySound to play a brief sound each minute and at completion.
         Use -Notify to show a Windows balloon notification at completion.
+
+    .EXAMPLE
+        Start-MinuteTimer -Minutes 5
+        Starts a 5-minute countdown, printing the remaining minutes each minute.
     #>
     [CmdletBinding()]
     param(
@@ -86,6 +114,27 @@ function Start-MinuteTimer {
 }
 
 function Show-BalloonNotification {
+    <#
+    .SYNOPSIS
+    Displays a Windows system tray balloon notification.
+
+    .DESCRIPTION
+    Uses System.Windows.Forms.NotifyIcon to show a balloon tip in the Windows
+    notification area. The notification disappears after the specified timeout.
+
+    .PARAMETER Title
+    The title text shown at the top of the balloon notification.
+
+    .PARAMETER Message
+    The body text of the balloon notification.
+
+    .PARAMETER TimeoutMilliseconds
+    How long (in milliseconds) the balloon stays visible. Default is 5000 ms.
+
+    .EXAMPLE
+    Show-BalloonNotification -Title "Done" -Message "Build completed successfully!"
+    Shows a balloon notification with the given title and message for 5 seconds.
+    #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)]

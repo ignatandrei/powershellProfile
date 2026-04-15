@@ -1,5 +1,24 @@
 # no need for trash or mksh
 function MakeDirCD {
+  <#
+  .SYNOPSIS
+  Creates a directory and changes the current location to it.
+
+  .DESCRIPTION
+  Creates the specified directory if it does not already exist, then sets
+  the current working directory to that path.
+
+  .PARAMETER Path
+  The path of the directory to create and navigate to.
+
+  .EXAMPLE
+  MakeDirCD -Path "MyNewFolder"
+  Creates MyNewFolder in the current directory and navigates into it.
+
+  .EXAMPLE
+  mkcd src
+  Uses the alias to create and navigate to the src directory.
+  #>
   param (
       [Parameter(Mandatory = $true)]
       [string]$Path
@@ -18,6 +37,22 @@ Set-Alias mkcd MakeDirCD
 # usage mkcd Andrei
 
 function Invoke-FsutilCommand {
+    <#
+    .SYNOPSIS
+    Executes fsutil.exe with the given arguments, using sudo when not running as Administrator.
+
+    .DESCRIPTION
+    Internal helper that wraps fsutil.exe calls and automatically prepends sudo.exe
+    when the current session is not elevated, so that callers do not need to handle
+    privilege escalation themselves.
+
+    .PARAMETER Arguments
+    The argument list to pass directly to fsutil.exe (e.g. 'file', 'queryCaseSensitiveInfo', 'C:\Folder').
+
+    .EXAMPLE
+    Invoke-FsutilCommand -Arguments @('file', 'queryCaseSensitiveInfo', 'C:\MyFolder')
+    Queries case-sensitivity info for C:\MyFolder via fsutil.exe.
+    #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]

@@ -87,6 +87,22 @@ Set-Alias ccopy copyCommand
 #usage  npm --version | copyCommand 
 
 function CopyCurDir(){
+    <#
+    .SYNOPSIS
+    Copies the current directory path to the Windows clipboard.
+
+    .DESCRIPTION
+    Retrieves the current working directory and writes its full path to the clipboard,
+    then prints a confirmation message.
+
+    .EXAMPLE
+    CopyCurDir
+    Copies the current directory path to the clipboard.
+
+    .EXAMPLE
+    ccd
+    Uses the alias to copy the current directory path.
+    #>
     $currentDir = Get-Location
     $null = Set-Clipboard -Value $currentDir.Path
     Write-Host "Copied current directory to clipboard: $($currentDir.Path)" -ForegroundColor Green

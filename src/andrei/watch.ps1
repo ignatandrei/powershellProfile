@@ -1,5 +1,26 @@
 # add code that runs dotnet watch in a function
 function Start-DotNetWatch {
+    <#
+    .SYNOPSIS
+    Runs dotnet watch run for the nearest .csproj project, including Aspire AppHost projects.
+
+    .DESCRIPTION
+    Searches the given path for a .csproj file. If none is found in the current directory,
+    it searches subdirectories for an Aspire AppHost project (identified by an AppHost.cs file).
+    Changes to the project directory, runs 'dotnet watch run --no-hot-reload', then returns
+    to the original directory.
+
+    .PARAMETER ProjectPath
+    The directory to search for a .csproj file. Defaults to the current directory.
+
+    .EXAMPLE
+    Start-DotNetWatch
+    Finds and watches the .NET project in the current directory.
+
+    .EXAMPLE
+    dnw
+    Uses the alias to start dotnet watch in the current directory.
+    #>
     param (
         [CmdletBinding()]
         [string]$ProjectPath = (Get-Location).Path
@@ -44,5 +65,21 @@ function Start-DotNetWatch {
 Set-Alias -Name dnw -Value Start-DotNetWatch
 
 function dnwr([string]$ProjectPath = (Get-Location).Path   ) {
+    <#
+    .SYNOPSIS
+    Runs dotnet watch run with --no-restore for the current or specified .NET project.
+
+    .DESCRIPTION
+    Calls Start-DotNetWatch with the --no-restore flag, skipping the NuGet restore step.
+    Useful when dependencies are already restored and you want faster startup.
+
+    .EXAMPLE
+    dnwr
+    Starts dotnet watch run --no-restore in the current directory.
+
+    .EXAMPLE
+    dnwr -ProjectPath C:\MyProject
+    Starts dotnet watch run --no-restore for the project at the specified path.
+    #>
     Invoke-Command -ScriptBlock { Start-DotNetWatch  $ProjectPath "--no-restore" }
 }
