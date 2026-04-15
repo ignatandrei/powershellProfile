@@ -188,7 +188,7 @@
     <header>
       <h1>PowerShell Function Catalog</h1>
       <p class="lead">All discovered functions from src, sorted alphabetically with a short description, aliases, and a runnable example.</p>
-      <div class="stats"><strong>43</strong> functions generated on <strong>2026-04-15 04:02:11</strong></div>
+      <div class="stats"><strong>51</strong> functions generated on <strong>2026-04-15 21:11:02</strong></div>
     </header>
     <section class="grid">
 <article class="card" data-name="Convert-VideoToGif">
@@ -230,6 +230,16 @@
   <div class="meta">Defined in <span>src/pws/audioVideoPictures.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">vidconvert</span></div>
   <pre><code>Convert-VideoToMP4AndGif -InputFile &quot;video.avi&quot;</code></pre>
+</article>
+<article class="card" data-name="ConvertTo-GroupedFileCount">
+  <div class="card-head">
+    <h2>ConvertTo-GroupedFileCount</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">ConvertTo action for GroupedFileCount.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  
+  <pre><code>ConvertTo-GroupedFileCount -FilePaths &lt;value&gt;</code></pre>
 </article>
 <article class="card" data-name="copyCommand">
   <div class="card-head">
@@ -320,6 +330,66 @@
   <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
   <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">casestatus</span></div>
   <pre><code>Get-FolderCaseSensitive</code></pre>
+</article>
+<article class="card" data-name="Get-GitAnalysisRepositoryRoot">
+  <div class="card-head">
+    <h2>Get-GitAnalysisRepositoryRoot</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Get action for GitAnalysisRepositoryRoot.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  
+  <pre><code>Get-GitAnalysisRepositoryRoot -Path &lt;value&gt;</code></pre>
+</article>
+<article class="card" data-name="Get-GitBugHotspots">
+  <div class="card-head">
+    <h2>Get-GitBugHotspots</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Lists files most frequently touched by bug-fix commits.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  
+  <pre><code>Get-GitBugHotspots</code></pre>
+</article>
+<article class="card" data-name="Get-GitChurnHotspots">
+  <div class="card-head">
+    <h2>Get-GitChurnHotspots</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Lists the most frequently changed files in a Git repository.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  
+  <pre><code>Get-GitChurnHotspots</code></pre>
+</article>
+<article class="card" data-name="Get-GitCommitVelocityByMonth">
+  <div class="card-head">
+    <h2>Get-GitCommitVelocityByMonth</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Shows commit counts grouped by month.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  
+  <pre><code>Get-GitCommitVelocityByMonth</code></pre>
+</article>
+<article class="card" data-name="Get-GitContributorsByCommitCount">
+  <div class="card-head">
+    <h2>Get-GitContributorsByCommitCount</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Lists contributors ranked by non-merge commit count.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  
+  <pre><code>Get-GitContributorsByCommitCount</code></pre>
+</article>
+<article class="card" data-name="Get-GitFirefightingCommits">
+  <div class="card-head">
+    <h2>Get-GitFirefightingCommits</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Lists likely firefighting commits such as hotfixes or rollbacks.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  
+  <pre><code>Get-GitFirefightingCommits</code></pre>
 </article>
 <article class="card" data-name="Get-HttpStatusMeaning">
   <div class="card-head">
@@ -420,6 +490,16 @@
   <div class="meta">Defined in <span>src/pws/file.ps1</span></div>
   
   <pre><code>Invoke-FsutilCommand -Arguments @(&#39;file&#39;, &#39;queryCaseSensitiveInfo&#39;, &#39;C:\MyFolder&#39;)</code></pre>
+</article>
+<article class="card" data-name="Invoke-GitRepositoryAnalysis">
+  <div class="card-head">
+    <h2>Invoke-GitRepositoryAnalysis</h2>
+    <span class="pill">andrei</span>
+  </div>
+  <p class="desc">Runs the five Git diagnostics from issue #13 in PowerShell.</p>
+  <div class="meta">Defined in <span>src/andrei/Analysis.ps1</span></div>
+  <div class="aliases"><span class="aliases-label">Aliases:</span> <span class="alias-chip">analysis</span></div>
+  <pre><code>Invoke-GitRepositoryAnalysis</code></pre>
 </article>
 <article class="card" data-name="IsoDateTimeAsVersion">
   <div class="card-head">
@@ -606,7 +686,7 @@
     <h2>updateMe</h2>
     <span class="pill">andrei</span>
   </div>
-  <p class="desc">Downloads the latest PowerShell profile from GitHub and replaces the current profile.</p>
+  <p class="desc">Downloads the latest pws-profile.ps1 from GitHub next to your $PROFILE and ensures your profile dot-sources it.</p>
   <div class="meta">Defined in <span>src/andrei/updateMe.ps1</span></div>
   
   <pre><code>updateMe</code></pre>
