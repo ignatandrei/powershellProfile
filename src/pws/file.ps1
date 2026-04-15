@@ -28,22 +28,40 @@ function Invoke-FsutilCommand {
     $principal = [Security.Principal.WindowsPrincipal]::new($identity)
     $isElevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-    $command = @('fsutil.exe') + $Arguments
+    try {
+        $fsutil = Get-Command -Name 'fsutil.exe' -CommandType Application -ErrorAction Stop
+    }
+    catch {
+        Write-Error "fsutil.exe is required to query folder case sensitivity."
+        return $null
+    }
+
+    $command = @($fsutil.Source) + $Arguments
     if (-not $isElevated) {
-        $sudo = Get-Command -Name 'sudo.exe' -ErrorAction Ignore
+        $sudo = Get-Command -Name 'sudo.exe' -CommandType Application -ErrorAction Ignore
         if ($null -eq $sudo) {
             Write-Error "sudo.exe is required to run fsutil when the current PowerShell session is not elevated."
             return $null
         }
 
-        $command = @('sudo.exe') + $command
+        $command = @($sudo.Source) + $command
     }
 
-    $output = & $command[0] $command[1..($command.Length - 1)] 2>&1
+    $output = $null
+    $exitCode = $null
+
+    try {
+        $output = & $command[0] $command[1..($command.Length - 1)] 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    catch {
+        Write-Error $_
+        return $null
+    }
 
     [PSCustomObject]@{
         Output = $output
-        ExitCode = $LASTEXITCODE
+        ExitCode = $exitCode
     }
 }
 
