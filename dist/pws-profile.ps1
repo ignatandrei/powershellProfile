@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-14 18:50:13 +00:00
+# Generated: 2026-04-15 03:44:46 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -1630,6 +1630,31 @@ Set-Alias parseurl Get-UrlParts
 #usage url "http://user:pass@localhost:3000/api/users?limit=10"
 
 # <<< END: internet.ps1
+
+# >>> BEGIN: MyWindowsUpdates.ps1
+function MakeDefault {
+    # Show hidden files and folders
+    Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'Hidden' -Value 1
+    Write-Host "Show hidden files and folders: enabled"
+
+    # Show extensions for known file types
+    Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'HideFileExt' -Value 0
+    Write-Host "Show extensions for known file types: enabled"
+
+    # Enable sudo command on Windows (requires Windows 11 24H2 or later)
+    $sudoRegPath = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Sudo'
+    if (-not (Test-Path $sudoRegPath)) {
+        New-Item -Path $sudoRegPath -Force | Out-Null
+    }
+    Set-ItemProperty -Path $sudoRegPath -Name 'Enabled' -Value 3
+    Write-Host "Sudo command: enabled (inline mode)"
+
+    # Restart Explorer to apply file/folder visibility changes
+    Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+    Write-Host "Explorer restarted to apply changes"
+}
+
+# <<< END: MyWindowsUpdates.ps1
 
 # >>> BEGIN: processManagement.ps1
 function Start-BackgroundProcess {
