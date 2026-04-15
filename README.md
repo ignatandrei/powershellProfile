@@ -5,16 +5,29 @@ A collection of utilities for PowerShell profile.
 
 This repository contains multiple small `.ps1` utility files under `src/pws`. A GitHub Actions workflow concatenates them (alphabetically) into a single, ready-to-use profile script at `dist/pws-profile.ps1` on every push to `main` and also publishes it as a build artifact.
 
-### Install/update into your PowerShell `$PROFILE`
+### First-time install
 
-Run this once (or any time you want to update) to download the latest generated profile into your `$PROFILE` path:
+Run the following block **once** to download `pws-profile.ps1` next to your `$PROFILE` and wire it in automatically:
 
 ```powershell
-# Ensure the profile directory exists, then download the latest unified profile
+# Ensure the profile directory exists
 $profileDir = Split-Path -Parent $PROFILE
 if (-not (Test-Path $profileDir)) { New-Item -ItemType Directory -Force -Path $profileDir | Out-Null }
-Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/ignatandrei/powershellProfile/main/dist/pws-profile.ps1" -OutFile $PROFILE
+
+# Download pws-profile.ps1 next to $PROFILE
+$pwsFile = Join-Path $profileDir 'pws-profile.ps1'
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/ignatandrei/powershellProfile/main/dist/pws-profile.ps1" -OutFile $pwsFile
+
+# Ensure $PROFILE exists and dot-sources pws-profile.ps1
+if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Force -Path $PROFILE | Out-Null }
+$includeLine = ". '$pwsFile'"
+$profileContent = Get-Content -Path $PROFILE -Raw -ErrorAction SilentlyContinue
+if (-not ($profileContent -match ('(?m)^\s*\.\s+.*' + [regex]::Escape('pws-profile.ps1')))) {
+    Add-Content -Path $PROFILE -Value "`n$includeLine"
+}
 ```
+
+This keeps your own `$PROFILE` intact and places the downloaded file alongside it as `pws-profile.ps1`.
 
 Notes:
 - The unified file is generated automatically by CI and committed to `dist/pws-profile.ps1` in the `main` branch.
@@ -48,8 +61,8 @@ pwsh -NoProfile -File ./scripts/generate-functions-html.ps1
 
 ## UpdateMe
 
-Once it is downloaded, use updateMe function for future deployments.
+Once installed, use `updateMe` for all future updates. It downloads the latest `pws-profile.ps1` next to your `$PROFILE` (backing up the previous copy), then ensures your `$PROFILE` still dot-sources it.
 
 ```powershell
-pwsh updateMe
+updateMe
 ```
