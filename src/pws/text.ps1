@@ -1,39 +1,32 @@
-<#
-.SYNOPSIS
-Starts Notepad with a new temporary text file in the user's temp folder.
-
-.DESCRIPTION
-Creates a unique .txt file under $env:TEMP (or uses a provided file name),
-optionally writes initial content, then launches Notepad to edit it.
-Returns the full path to the temp file.
-
-.PARAMETER FileName
-Optional base name for the temp file. Directory parts will be ignored.
-If no extension is provided, .txt will be added.
-
-.PARAMETER Content
-Optional initial content to write to the file before opening Notepad.
-
-.PARAMETER NoLaunch
-When specified, the function will create (and optionally populate) the file
-but will not launch Notepad. Useful for scripting and tests.
-
-.EXAMPLE
-Start-TempNotepad
-
-Creates a new temp .txt file and opens it in Notepad.
-
-.EXAMPLE
-Start-TempNotepad -FileName notes -Content "Todo:\n- item 1" 
-
-Creates %TEMP%\notes.txt with initial content and opens it in Notepad.
-
-.EXAMPLE
-Start-TempNotepad -Content "Hello" -NoLaunch
-
-Creates a temp .txt file with the content but does not launch Notepad; returns the path.
-#>
 function Start-TempNotepad {
+	<#
+	.SYNOPSIS
+	Starts Notepad with a new temporary text file in the user's temp folder.
+
+	.DESCRIPTION
+	Creates a unique .txt file under $env:TEMP (or uses a provided file name),
+	optionally writes initial content, then launches Notepad to edit it.
+	Returns the full path to the temp file.
+
+	.PARAMETER FileName
+	Optional base name for the temp file. Directory parts will be ignored.
+	If no extension is provided, .txt will be added.
+
+	.PARAMETER Content
+	Optional initial content to write to the file before opening Notepad.
+
+	.PARAMETER NoLaunch
+	When specified, the function will create (and optionally populate) the file
+	but will not launch Notepad. Useful for scripting and tests.
+
+	.EXAMPLE
+	Start-TempNotepad
+	Creates a new temp .txt file and opens it in Notepad.
+
+	.EXAMPLE
+	Start-TempNotepad -FileName notes -Content "Todo:\n- item 1"
+	Creates %TEMP%\notes.txt with initial content and opens it in Notepad.
+	#>
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory=$false, Position=0)]
@@ -134,39 +127,36 @@ $Script:DICTIONARY = @{
 	'0' = 'DIGIT 0: Zero'
 }
 
-<#
-.SYNOPSIS
-Parses a string and returns the corresponding words from DICTIONARY.
-
-.DESCRIPTION
-For each character in the input string, if that character exists as a key in the
-provided dictionary (defaults to $Script:DICTIONARY), the matching word (value)
-is returned. Characters not present in the dictionary are skipped.
-
-.PARAMETER InputString
-The string to parse.
-
-.PARAMETER Dictionary
-Optional custom dictionary (hashtable) to use instead of $Script:DICTIONARY.
-Keys should be single-character strings; values are the words to return.
-
-.PARAMETER AsString
-When specified, returns a single string joined by -JoinWith instead of an array.
-
-.PARAMETER JoinWith
-The separator to use when -AsString is specified. Defaults to a single space.
-
-.EXAMPLE
-Get-WordsFromDictionary -InputString "abc"
-
-Returns: Alfa, Bravo, Charlie
-
-.EXAMPLE
-Get-WordsFromDictionary -InputString "Hi-5" -AsString
-
-Returns: "Hotel India Five"
-#>
 function Get-WordsFromDictionary {
+	<#
+	.SYNOPSIS
+	Parses a string and returns the corresponding words from a dictionary (NATO phonetic by default).
+
+	.DESCRIPTION
+	For each character in the input string, if that character exists as a key in the
+	provided dictionary (defaults to $Script:DICTIONARY), the matching word (value)
+	is returned. Characters not present in the dictionary are skipped.
+
+	.PARAMETER InputString
+	The string to parse.
+
+	.PARAMETER Dictionary
+	Optional custom dictionary (hashtable) to use instead of $Script:DICTIONARY.
+
+	.PARAMETER AsString
+	When specified, returns a single string joined by -JoinWith instead of an array.
+
+	.PARAMETER JoinWith
+	The separator to use when -AsString is specified. Defaults to a single space.
+
+	.EXAMPLE
+	Get-WordsFromDictionary -InputString "abc"
+	Returns: Alfa, Bravo, Charlie
+
+	.EXAMPLE
+	nato "Hi5" -AsString
+	Uses the alias and returns "Hotel India DIGIT 5: Five"
+	#>
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory=$true, Position=0)]
