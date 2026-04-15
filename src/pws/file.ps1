@@ -17,6 +17,54 @@ function MakeDirCD {
 Set-Alias mkcd MakeDirCD
 # usage mkcd Andrei
 
+function Invoke-FsutilCommand {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string[]]$Arguments
+    )
+
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+    $isElevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    try {
+        $fsutil = Get-Command -Name 'fsutil.exe' -CommandType Application -ErrorAction Stop
+    }
+    catch {
+        Write-Error "fsutil.exe is required to query folder case sensitivity."
+        return $null
+    }
+
+    $command = @($fsutil.Source) + $Arguments
+    if (-not $isElevated) {
+        $sudo = Get-Command -Name 'sudo.exe' -CommandType Application -ErrorAction Ignore
+        if ($null -eq $sudo) {
+            Write-Error "sudo.exe is required to run fsutil when the current PowerShell session is not elevated."
+            return $null
+        }
+
+        $command = @($sudo.Source) + $command
+    }
+
+    $output = $null
+    $exitCode = $null
+
+    try {
+        $output = & $command[0] $command[1..($command.Length - 1)] 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    catch {
+        Write-Error $_
+        return $null
+    }
+
+    [PSCustomObject]@{
+        Output = $output
+        ExitCode = $exitCode
+    }
+}
+
 function Get-FolderCaseSensitive {
     <#
     .SYNOPSIS
@@ -48,12 +96,17 @@ function Get-FolderCaseSensitive {
         return
     }
 
-    $output = & fsutil.exe file queryCaseSensitiveInfo $Path 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "fsutil failed for '$Path': $output"
+    $result = Invoke-FsutilCommand -Arguments @('file', 'queryCaseSensitiveInfo', $Path)
+    if ($null -eq $result) {
         return
     }
-    Write-Output $output
+
+    if ($result.ExitCode -ne 0) {
+        Write-Error "fsutil failed for '$Path': $($result.Output)"
+        return
+    }
+
+    Write-Output $result.Output
 }
 
 Set-Alias casestatus Get-FolderCaseSensitive
@@ -92,12 +145,17 @@ function Enable-FolderCaseSensitive {
         return
     }
 
-    $output = & fsutil.exe file setCaseSensitiveInfo $Path enable 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "fsutil failed for '$Path': $output"
+    $result = Invoke-FsutilCommand -Arguments @('file', 'setCaseSensitiveInfo', $Path, 'enable')
+    if ($null -eq $result) {
         return
     }
-    Write-Output $output
+
+    if ($result.ExitCode -ne 0) {
+        Write-Error "fsutil failed for '$Path': $($result.Output)"
+        return
+    }
+
+    Write-Output $result.Output
 }
 
 Set-Alias caseon Enable-FolderCaseSensitive
@@ -135,12 +193,17 @@ function Disable-FolderCaseSensitive {
         return
     }
 
-    $output = & fsutil.exe file setCaseSensitiveInfo $Path disable 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "fsutil failed for '$Path': $output"
+    $result = Invoke-FsutilCommand -Arguments @('file', 'setCaseSensitiveInfo', $Path, 'disable')
+    if ($null -eq $result) {
         return
     }
-    Write-Output $output
+
+    if ($result.ExitCode -ne 0) {
+        Write-Error "fsutil failed for '$Path': $($result.Output)"
+        return
+    }
+
+    Write-Output $result.Output
 }
 
 Set-Alias caseoff Disable-FolderCaseSensitive
