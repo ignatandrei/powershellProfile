@@ -37,10 +37,11 @@ if (-not (Test-Path $PROFILE)) {
 }
 
 # Add dot-source line to $PROFILE if not already present
-$includeLine = ". '$pwsFile'"
+$escapedPwsFile = $pwsFile -replace "'", "''"
+$includeLine = ". '$escapedPwsFile'"
 $profileContent = Get-Content -Path $PROFILE -Raw -ErrorAction SilentlyContinue
 if (-not ($profileContent -match ('(?m)^\s*\.\s+.*' + [regex]::Escape('pws-profile.ps1')))) {
-    Add-Content -Path $PROFILE -Value "`n$includeLine"
+    Add-Content -Path $PROFILE -Value ([Environment]::NewLine + $includeLine)
     Write-Host "Added include to: $PROFILE"
 } else {
     Write-Host "Profile already includes pws-profile.ps1"

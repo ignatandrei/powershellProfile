@@ -23,7 +23,7 @@ if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Force -Path $PROFILE |
 $includeLine = ". '$pwsFile'"
 $profileContent = Get-Content -Path $PROFILE -Raw -ErrorAction SilentlyContinue
 if (-not ($profileContent -match ('(?m)^\s*\.\s+.*' + [regex]::Escape('pws-profile.ps1')))) {
-    Add-Content -Path $PROFILE -Value "`n$includeLine"
+    Add-Content -Path $PROFILE -Value ([Environment]::NewLine + $includeLine)
 }
 ```
 
