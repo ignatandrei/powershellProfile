@@ -24,6 +24,13 @@ function Get-CustomAliasHelpEvanHahn {
     Write-Host "======================================" -ForegroundColor Cyan
     Write-Host ""
 
+    # Analysis Functions
+    Write-Host "ANALYSIS" -ForegroundColor Yellow
+    Write-Host "--------" -ForegroundColor Yellow
+    Write-Host "  analysis         " -NoNewline -ForegroundColor Green
+    Write-Host "- Run Git repository diagnostic views from issue #13 (Invoke-GitRepositoryAnalysis)" -ForegroundColor White
+    Write-Host ""
+
     # Audio/Video/Pictures Functions
     Write-Host "AUDIO/VIDEO/PICTURES" -ForegroundColor Yellow
     Write-Host "--------------------" -ForegroundColor Yellow
