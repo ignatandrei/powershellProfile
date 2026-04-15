@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-15 03:53:23 +00:00
+# Generated: 2026-04-15 16:20:53 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -372,6 +372,22 @@ Set-Alias ccopy copyCommand
 #usage  npm --version | copyCommand 
 
 function CopyCurDir(){
+    <#
+    .SYNOPSIS
+    Copies the current directory path to the Windows clipboard.
+
+    .DESCRIPTION
+    Retrieves the current working directory and writes its full path to the clipboard,
+    then prints a confirmation message.
+
+    .EXAMPLE
+    CopyCurDir
+    Copies the current directory path to the clipboard.
+
+    .EXAMPLE
+    ccd
+    Uses the alias to copy the current directory path.
+    #>
     $currentDir = Get-Location
     $null = Set-Clipboard -Value $currentDir.Path
     Write-Host "Copied current directory to clipboard: $($currentDir.Path)" -ForegroundColor Green
@@ -644,14 +660,38 @@ Set-Alias -Name branchws -Value New-BranchWorkspace
 
 # >>> BEGIN: datesAndTimes.ps1
 function GetISoDate {
+    <#
+    .SYNOPSIS
+    Returns the current date in ISO 8601 format (yyyy-MM-dd).
+
+    .EXAMPLE
+    GetISoDate
+    Returns today's date, for example: 2025-04-15
+    #>
     # Returns the current date and time in ISO 8601 format
     return (Get-Date).ToString("yyyy-MM-dd")
 }
 function GetISoDateTime {
+    <#
+    .SYNOPSIS
+    Returns the current date and time in ISO 8601 compact format (yyyyMMddTHHmmss).
+
+    .EXAMPLE
+    GetISoDateTime
+    Returns the current timestamp, for example: 20250415T103045
+    #>
     # Returns the current date and time in ISO 8601 format
     return (Get-Date).ToString("yyyyMMddTHHmmss")
 }
 function IsoDateTimeAsVersion {
+    <#
+    .SYNOPSIS
+    Returns the current date and time as a four-part version number (1.yyyy.MMdd.HHmm).
+
+    .EXAMPLE
+    IsoDateTimeAsVersion
+    Returns a version string, for example: 1.2025.0415.1030
+    #>
     # Returns the current date and time in ISO 8601 format
     return (Get-Date).ToString("1.yyyy.MMdd.HHmm")
 }
@@ -683,6 +723,10 @@ function Start-MinuteTimer {
         Press Ctrl+C to interrupt the timer early.
         Use -PlaySound to play a brief sound each minute and at completion.
         Use -Notify to show a Windows balloon notification at completion.
+
+    .EXAMPLE
+        Start-MinuteTimer -Minutes 5
+        Starts a 5-minute countdown, printing the remaining minutes each minute.
     #>
     [CmdletBinding()]
     param(
@@ -731,6 +775,27 @@ function Start-MinuteTimer {
 }
 
 function Show-BalloonNotification {
+    <#
+    .SYNOPSIS
+    Displays a Windows system tray balloon notification.
+
+    .DESCRIPTION
+    Uses System.Windows.Forms.NotifyIcon to show a balloon tip in the Windows
+    notification area. The notification disappears after the specified timeout.
+
+    .PARAMETER Title
+    The title text shown at the top of the balloon notification.
+
+    .PARAMETER Message
+    The body text of the balloon notification.
+
+    .PARAMETER TimeoutMilliseconds
+    How long (in milliseconds) the balloon stays visible. Default is 5000 ms.
+
+    .EXAMPLE
+    Show-BalloonNotification -Title "Done" -Message "Build completed successfully!"
+    Shows a balloon notification with the given title and message for 5 seconds.
+    #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)]
@@ -849,6 +914,25 @@ Set-Alias rn Show-MonthCalendar
 # >>> BEGIN: file.ps1
 # no need for trash or mksh
 function MakeDirCD {
+  <#
+  .SYNOPSIS
+  Creates a directory and changes the current location to it.
+
+  .DESCRIPTION
+  Creates the specified directory if it does not already exist, then sets
+  the current working directory to that path.
+
+  .PARAMETER Path
+  The path of the directory to create and navigate to.
+
+  .EXAMPLE
+  MakeDirCD -Path "MyNewFolder"
+  Creates MyNewFolder in the current directory and navigates into it.
+
+  .EXAMPLE
+  mkcd src
+  Uses the alias to create and navigate to the src directory.
+  #>
   param (
       [Parameter(Mandatory = $true)]
       [string]$Path
@@ -867,6 +951,22 @@ Set-Alias mkcd MakeDirCD
 # usage mkcd Andrei
 
 function Invoke-FsutilCommand {
+    <#
+    .SYNOPSIS
+    Executes fsutil.exe with the given arguments, using sudo when not running as Administrator.
+
+    .DESCRIPTION
+    Internal helper that wraps fsutil.exe calls and automatically prepends sudo.exe
+    when the current session is not elevated, so that callers do not need to handle
+    privilege escalation themselves.
+
+    .PARAMETER Arguments
+    The argument list to pass directly to fsutil.exe (e.g. 'file', 'queryCaseSensitiveInfo', 'C:\Folder').
+
+    .EXAMPLE
+    Invoke-FsutilCommand -Arguments @('file', 'queryCaseSensitiveInfo', 'C:\MyFolder')
+    Queries case-sensitivity info for C:\MyFolder via fsutil.exe.
+    #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -1541,6 +1641,23 @@ Set-Alias tinet Toggle-InternetConnectivity
 #usage tinet
 
 function Toggle-InternetConnectivity2 {
+    <#
+    .SYNOPSIS
+    Toggles network adapters off, waits 10 seconds, then toggles them back on.
+
+    .DESCRIPTION
+    Calls Toggle-InternetConnectivity to disable network adapters, waits 10 seconds,
+    then calls Toggle-InternetConnectivity again to re-enable them. Useful for
+    quickly resetting network connectivity.
+
+    .EXAMPLE
+    Toggle-InternetConnectivity2
+    Disables network adapters, waits 10 s, then re-enables them.
+
+    .EXAMPLE
+    tinet2
+    Uses the alias to perform the network reset cycle.
+    #>
     Toggle-InternetConnectivity
     Write-Host "Waiting 10 seconds"
     Start-Sleep  -Seconds 10
@@ -1696,6 +1813,21 @@ Set-Alias parseurl Get-UrlParts
 
 # >>> BEGIN: MyWindowsUpdates.ps1
 function MakeDefault {
+    <#
+    .SYNOPSIS
+    Configures recommended default Windows Explorer and security settings.
+
+    .DESCRIPTION
+    Applies three common Windows quality-of-life settings:
+    - Shows hidden files and folders in Explorer.
+    - Shows file extensions for known file types.
+    - Enables the Windows 11 sudo command (inline mode) via the registry.
+    Restarts Explorer to apply the visibility changes immediately.
+
+    .EXAMPLE
+    MakeDefault
+    Applies all default Windows settings and restarts Explorer.
+    #>
     # Show hidden files and folders
     Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'Hidden' -Value 1
     Write-Host "Show hidden files and folders: enabled"
@@ -1721,6 +1853,25 @@ function MakeDefault {
 
 # >>> BEGIN: processManagement.ps1
 function Start-BackgroundProcess {
+	<#
+	.SYNOPSIS
+	Starts a command as a hidden background PowerShell process.
+
+	.DESCRIPTION
+	Launches a new PowerShell window in hidden mode, running the provided command
+	line so that it runs independently without blocking the current session.
+
+	.PARAMETER CommandLine
+	The command and arguments to run in the background (joined into a single string).
+
+	.EXAMPLE
+	Start-BackgroundProcess notepad
+	Starts Notepad as a hidden background process.
+
+	.EXAMPLE
+	bb "dotnet build MyProject.csproj"
+	Uses the alias to build a project in the background.
+	#>
 	param(
 		[Parameter(Mandatory=$true, Position=0, ValueFromRemainingArguments=$true)]
 		[string[]]$CommandLine
@@ -1739,6 +1890,28 @@ function Start-BackgroundProcess {
 
 Set-Alias bb Start-BackgroundProcess
 function Wait-ForPID {
+	<#
+	.SYNOPSIS
+	Waits until a process specified by PID or name has exited.
+
+	.DESCRIPTION
+	Polls the specified process every IntervalSeconds seconds until it is no longer
+	running, then prints a message. Accepts either a numeric PID or a process name.
+
+	.PARAMETER ProcessOrPID
+	The process ID (numeric) or process name to wait for.
+
+	.PARAMETER IntervalSeconds
+	How many seconds to wait between polling checks. Default is 10.
+
+	.EXAMPLE
+	Wait-ForPID -ProcessOrPID 1234
+	Waits for the process with PID 1234 to exit.
+
+	.EXAMPLE
+	waitpid notepad
+	Uses the alias to wait for all Notepad processes to exit.
+	#>
 	param(
 		[Parameter(Mandatory=$true, Position=0)]
 		[Alias('Id','Name')]
@@ -1766,6 +1939,25 @@ function Wait-ForPID {
 }
 # Kills a process by PID or name. First tries normal kill, waits 10s, then force kills if still running
 function Stop-ProcessWithRetry {
+	<#
+	.SYNOPSIS
+	Kills a process by PID or name, force-killing it if it does not stop within 10 seconds.
+
+	.DESCRIPTION
+	Sends a normal termination request to the specified process via taskkill, waits 10 seconds,
+	then issues a forced kill (with /F /T) if the process is still running.
+
+	.PARAMETER ProcessOrPID
+	The process ID (numeric) or process name (e.g. 'notepad') to terminate.
+
+	.EXAMPLE
+	Stop-ProcessWithRetry -ProcessOrPID notepad
+	Attempts to kill all Notepad processes, force-killing if necessary.
+
+	.EXAMPLE
+	murder 1234
+	Uses the alias to terminate the process with PID 1234.
+	#>
 	param(
 		[Parameter(Mandatory=$true, Position=0)]
 		[Alias('Id','Name')]
@@ -1808,6 +2000,25 @@ Set-Alias waitfor Wait-ForPID
 
 
 function Split-PathToLines {
+    <#
+    .SYNOPSIS
+    Splits a file path into individual segments, printing each on its own line.
+
+    .DESCRIPTION
+    Breaks the given path string on both forward-slash and backslash separators,
+    then outputs each part as a separate line. Useful for visualizing deeply nested paths.
+
+    .PARAMETER Path
+    The file or directory path to split.
+
+    .EXAMPLE
+    Split-PathToLines -Path "C:\Users\me\Documents"
+    Outputs: C:, Users, me, Documents each on a separate line.
+
+    .EXAMPLE
+    prettypath "C:\Program Files\App\bin"
+    Uses the alias to print each path segment on its own line.
+    #>
     param(
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true)]
         [string]$Path
@@ -1824,6 +2035,26 @@ Set-Alias prettypath Split-PathToLines
 
 # >>> BEGIN: system.ps1
 function Set-WindowsMode {
+    <#
+    .SYNOPSIS
+    Sets Windows to Dark or Light mode by writing to the registry theme settings.
+
+    .DESCRIPTION
+    Modifies the AppsUseLightTheme and SystemUsesLightTheme registry values under
+    HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize so that both
+    app and system UI switch to the requested color scheme.
+
+    .PARAMETER Mode
+    The color scheme to apply. Accepted values: 'Dark' or 'Light'.
+
+    .EXAMPLE
+    Set-WindowsMode -Mode Dark
+    Switches Windows and applications to Dark mode.
+
+    .EXAMPLE
+    theme Light
+    Uses the alias to switch to Light mode.
+    #>
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [ValidateSet('Dark', 'Light')]
@@ -1851,42 +2082,35 @@ Set-Alias theme Set-WindowsMode
 # <<< END: system.ps1
 
 # >>> BEGIN: text.ps1
-<#
-.SYNOPSIS
-Starts Notepad with a new temporary text file in the user's temp folder.
-
-.DESCRIPTION
-Creates a unique .txt file under $env:TEMP (or uses a provided file name),
-optionally writes initial content, then launches Notepad to edit it.
-Returns the full path to the temp file.
-
-.PARAMETER FileName
-Optional base name for the temp file. Directory parts will be ignored.
-If no extension is provided, .txt will be added.
-
-.PARAMETER Content
-Optional initial content to write to the file before opening Notepad.
-
-.PARAMETER NoLaunch
-When specified, the function will create (and optionally populate) the file
-but will not launch Notepad. Useful for scripting and tests.
-
-.EXAMPLE
-Start-TempNotepad
-
-Creates a new temp .txt file and opens it in Notepad.
-
-.EXAMPLE
-Start-TempNotepad -FileName notes -Content "Todo:\n- item 1" 
-
-Creates %TEMP%\notes.txt with initial content and opens it in Notepad.
-
-.EXAMPLE
-Start-TempNotepad -Content "Hello" -NoLaunch
-
-Creates a temp .txt file with the content but does not launch Notepad; returns the path.
-#>
 function Start-TempNotepad {
+	<#
+	.SYNOPSIS
+	Starts Notepad with a new temporary text file in the user's temp folder.
+
+	.DESCRIPTION
+	Creates a unique .txt file under $env:TEMP (or uses a provided file name),
+	optionally writes initial content, then launches Notepad to edit it.
+	Returns the full path to the temp file.
+
+	.PARAMETER FileName
+	Optional base name for the temp file. Directory parts will be ignored.
+	If no extension is provided, .txt will be added.
+
+	.PARAMETER Content
+	Optional initial content to write to the file before opening Notepad.
+
+	.PARAMETER NoLaunch
+	When specified, the function will create (and optionally populate) the file
+	but will not launch Notepad. Useful for scripting and tests.
+
+	.EXAMPLE
+	Start-TempNotepad
+	Creates a new temp .txt file and opens it in Notepad.
+
+	.EXAMPLE
+	Start-TempNotepad -FileName notes -Content "Todo:\n- item 1"
+	Creates %TEMP%\notes.txt with initial content and opens it in Notepad.
+	#>
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory=$false, Position=0)]
@@ -1987,39 +2211,36 @@ $Script:DICTIONARY = @{
 	'0' = 'DIGIT 0: Zero'
 }
 
-<#
-.SYNOPSIS
-Parses a string and returns the corresponding words from DICTIONARY.
-
-.DESCRIPTION
-For each character in the input string, if that character exists as a key in the
-provided dictionary (defaults to $Script:DICTIONARY), the matching word (value)
-is returned. Characters not present in the dictionary are skipped.
-
-.PARAMETER InputString
-The string to parse.
-
-.PARAMETER Dictionary
-Optional custom dictionary (hashtable) to use instead of $Script:DICTIONARY.
-Keys should be single-character strings; values are the words to return.
-
-.PARAMETER AsString
-When specified, returns a single string joined by -JoinWith instead of an array.
-
-.PARAMETER JoinWith
-The separator to use when -AsString is specified. Defaults to a single space.
-
-.EXAMPLE
-Get-WordsFromDictionary -InputString "abc"
-
-Returns: Alfa, Bravo, Charlie
-
-.EXAMPLE
-Get-WordsFromDictionary -InputString "Hi-5" -AsString
-
-Returns: "Hotel India Five"
-#>
 function Get-WordsFromDictionary {
+	<#
+	.SYNOPSIS
+	Parses a string and returns the corresponding words from a dictionary (NATO phonetic by default).
+
+	.DESCRIPTION
+	For each character in the input string, if that character exists as a key in the
+	provided dictionary (defaults to $Script:DICTIONARY), the matching word (value)
+	is returned. Characters not present in the dictionary are skipped.
+
+	.PARAMETER InputString
+	The string to parse.
+
+	.PARAMETER Dictionary
+	Optional custom dictionary (hashtable) to use instead of $Script:DICTIONARY.
+
+	.PARAMETER AsString
+	When specified, returns a single string joined by -JoinWith instead of an array.
+
+	.PARAMETER JoinWith
+	The separator to use when -AsString is specified. Defaults to a single space.
+
+	.EXAMPLE
+	Get-WordsFromDictionary -InputString "abc"
+	Returns: Alfa, Bravo, Charlie
+
+	.EXAMPLE
+	nato "Hi5" -AsString
+	Uses the alias and returns "Hotel India DIGIT 5: Five"
+	#>
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory=$true, Position=0)]
@@ -2071,6 +2292,19 @@ Set-Alias nato Get-WordsFromDictionary
 
 # >>> BEGIN: updateMe.ps1
 function updateMe() {
+<#
+.SYNOPSIS
+Downloads the latest PowerShell profile from GitHub and replaces the current profile.
+
+.DESCRIPTION
+Backs up the existing profile with a timestamped filename, then downloads the latest
+unified profile from the ignatandrei/powershellProfile repository on GitHub and writes
+it to $PROFILE.
+
+.EXAMPLE
+updateMe
+Backs up the current profile and installs the latest version from GitHub.
+#>
 # Ensure the profile directory exists, then download the latest unified profile
 $profileDir = Split-Path -Parent $PROFILE
 if (-not (Test-Path $profileDir)) { New-Item -ItemType Directory -Force -Path $profileDir | Out-Null }
@@ -2091,6 +2325,27 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/ignat
 # >>> BEGIN: watch.ps1
 # add code that runs dotnet watch in a function
 function Start-DotNetWatch {
+    <#
+    .SYNOPSIS
+    Runs dotnet watch run for the nearest .csproj project, including Aspire AppHost projects.
+
+    .DESCRIPTION
+    Searches the given path for a .csproj file. If none is found in the current directory,
+    it searches subdirectories for an Aspire AppHost project (identified by an AppHost.cs file).
+    Changes to the project directory, runs 'dotnet watch run --no-hot-reload', then returns
+    to the original directory.
+
+    .PARAMETER ProjectPath
+    The directory to search for a .csproj file. Defaults to the current directory.
+
+    .EXAMPLE
+    Start-DotNetWatch
+    Finds and watches the .NET project in the current directory.
+
+    .EXAMPLE
+    dnw
+    Uses the alias to start dotnet watch in the current directory.
+    #>
     param (
         [CmdletBinding()]
         [string]$ProjectPath = (Get-Location).Path
@@ -2135,6 +2390,22 @@ function Start-DotNetWatch {
 Set-Alias -Name dnw -Value Start-DotNetWatch
 
 function dnwr([string]$ProjectPath = (Get-Location).Path   ) {
+    <#
+    .SYNOPSIS
+    Runs dotnet watch run with --no-restore for the current or specified .NET project.
+
+    .DESCRIPTION
+    Calls Start-DotNetWatch with the --no-restore flag, skipping the NuGet restore step.
+    Useful when dependencies are already restored and you want faster startup.
+
+    .EXAMPLE
+    dnwr
+    Starts dotnet watch run --no-restore in the current directory.
+
+    .EXAMPLE
+    dnwr -ProjectPath C:\MyProject
+    Starts dotnet watch run --no-restore for the project at the specified path.
+    #>
     Invoke-Command -ScriptBlock { Start-DotNetWatch  $ProjectPath "--no-restore" }
 }
 
@@ -2143,6 +2414,29 @@ function dnwr([string]$ProjectPath = (Get-Location).Path   ) {
 # >>> BEGIN: zip.ps1
 # add code that unzips files in a function
 function Start-Unzip {
+    <#
+    .SYNOPSIS
+    Extracts all zip files in the specified directory into a destination folder.
+
+    .DESCRIPTION
+    Finds every *.zip file in the given path, extracts each one into a destination
+    subfolder (default: ExtractedFiles), and on Windows opens the folder in Explorer.
+
+    .PARAMETER ProjectPath
+    The directory to search for zip files. Defaults to the current directory.
+
+    .PARAMETER DestinationFolder
+    The name of the subfolder inside ProjectPath where files will be extracted.
+    Defaults to "ExtractedFiles".
+
+    .EXAMPLE
+    Start-Unzip
+    Extracts all zip files in the current directory into .\ExtractedFiles.
+
+    .EXAMPLE
+    uz -DestinationFolder "Output"
+    Uses the alias to extract zip files into .\Output.
+    #>
     [CmdletBinding()]
     param (
         
