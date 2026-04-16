@@ -191,7 +191,7 @@ function Enable-FolderCaseSensitive {
         $tempFolder = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
         New-Item -ItemType Directory -Path $tempFolder | Out-Null
         Write-Verbose "Copying contents of '$Path' to temporary folder '$tempFolder'."
-        Copy-Item -LiteralPath (Join-Path $Path '*') -Destination $tempFolder -Recurse -Force
+        Get-ChildItem -LiteralPath $Path -Force | Copy-Item -Destination $tempFolder -Recurse -Force
         Get-ChildItem -LiteralPath $Path -Force | Remove-Item -Recurse -Force
     }
 
@@ -211,7 +211,7 @@ function Enable-FolderCaseSensitive {
     finally {
         if ($null -ne $tempFolder) {
             Write-Verbose "Restoring contents from '$tempFolder' back to '$Path'."
-            Copy-Item -LiteralPath (Join-Path $tempFolder '*') -Destination $Path -Recurse -Force
+            Get-ChildItem -LiteralPath $tempFolder -Force | Copy-Item -Destination $Path -Recurse -Force
             Remove-Item -LiteralPath $tempFolder -Recurse -Force
             Write-Verbose "Contents successfully restored to '$Path'."
         }
