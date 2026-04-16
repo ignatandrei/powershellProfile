@@ -1,6 +1,6 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-16 13:30:40 +00:00
+# Generated: 2026-04-16 18:27:49 +00:00
 # Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
@@ -1815,8 +1815,8 @@ function Enable-FolderCaseSensitive {
         return
     }
 
-    $items = Get-ChildItem -LiteralPath $Path -Force
-    $isEmpty = ($items.Count -eq 0)
+    $firstItem = Get-ChildItem -LiteralPath $Path -Force -ErrorAction Stop | Select-Object -First 1
+    $isEmpty = ($null -eq $firstItem)
 
     $tempFolder = $null
     if (-not $isEmpty) {
