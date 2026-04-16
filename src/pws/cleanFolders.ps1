@@ -106,7 +106,7 @@ function Clear-JavaBuildFolders {
 
     Get-ChildItem -Path $Path -Include 'target', 'build' -Recurse -Directory -Force -ErrorAction SilentlyContinue |
         Where-Object {
-            # Exclude Gradle wrapper build scripts by checking for pom.xml or build.gradle in the parent
+            # Reduce false positives by only including build folders whose parent contains Maven/Gradle descriptors
             $parent = $_.Parent.FullName
             (Test-Path (Join-Path $parent 'pom.xml')) -or
             (Test-Path (Join-Path $parent 'build.gradle')) -or
@@ -251,11 +251,16 @@ function Clear-AllBuildFolders {
     )
 
     $childParams = @{
-        Path    = $Path
-        WhatIf  = [bool]$WhatIfPreference
-        Confirm = ($ConfirmPreference -eq 'Low')
+        Path = $Path
     }
 
+    if ($PSBoundParameters.ContainsKey('WhatIf')) {
+        $childParams['WhatIf'] = $true
+    }
+
+    if ($PSBoundParameters.ContainsKey('Confirm')) {
+        $childParams['Confirm'] = $true
+    }
     Write-Host "=== Cleaning Node.js (node_modules) ==="
     Clear-NodeModules @childParams
 
