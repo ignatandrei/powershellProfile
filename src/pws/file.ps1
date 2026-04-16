@@ -157,6 +157,9 @@ function Enable-FolderCaseSensitive {
     Uses fsutil.exe to enable per-directory case sensitivity on Windows 10 1803+.
     New files and subdirectories created inside the folder will be treated as
     case-sensitive. Requires elevated (Administrator) privileges.
+    If the folder is not empty, its contents are copied recursively to a
+    temporary folder, fsutil is invoked on the now-empty-equivalent directory,
+    and then the contents are always copied back.
 
     .PARAMETER Path
     The directory path to modify. Defaults to the current directory.
@@ -180,17 +183,39 @@ function Enable-FolderCaseSensitive {
         return
     }
 
-    $result = Invoke-FsutilCommand -Arguments @('file', 'setCaseSensitiveInfo', $Path, 'enable')
-    if ($null -eq $result) {
-        return
+    $firstItem = Get-ChildItem -LiteralPath $Path -Force -ErrorAction Stop | Select-Object -First 1
+    $isEmpty = ($null -eq $firstItem)
+
+    $tempFolder = $null
+    if (-not $isEmpty) {
+        $tempFolder = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
+        New-Item -ItemType Directory -Path $tempFolder | Out-Null
+        Write-Verbose "Copying contents of '$Path' to temporary folder '$tempFolder'."
+        Copy-Item -LiteralPath (Join-Path $Path '*') -Destination $tempFolder -Recurse -Force
+        Get-ChildItem -LiteralPath $Path -Force | Remove-Item -Recurse -Force
     }
 
-    if ($result.ExitCode -ne 0) {
-        Write-Error "fsutil failed for '$Path': $($result.Output)"
-        return
-    }
+    try {
+        $result = Invoke-FsutilCommand -Arguments @('file', 'setCaseSensitiveInfo', $Path, 'enable')
+        if ($null -eq $result) {
+            return
+        }
 
-    Write-Output $result.Output
+        if ($result.ExitCode -ne 0) {
+            Write-Error "fsutil failed for '$Path': $($result.Output)"
+            return
+        }
+
+        Write-Output $result.Output
+    }
+    finally {
+        if ($null -ne $tempFolder) {
+            Write-Verbose "Restoring contents from '$tempFolder' back to '$Path'."
+            Copy-Item -LiteralPath (Join-Path $tempFolder '*') -Destination $Path -Recurse -Force
+            Remove-Item -LiteralPath $tempFolder -Recurse -Force
+            Write-Verbose "Contents successfully restored to '$Path'."
+        }
+    }
 }
 
 Set-Alias caseon Enable-FolderCaseSensitive
