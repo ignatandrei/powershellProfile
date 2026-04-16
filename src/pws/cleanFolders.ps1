@@ -250,20 +250,26 @@ function Clear-AllBuildFolders {
         [string]$Path = (Get-Location).Path
     )
 
+    $childParams = @{
+        Path    = $Path
+        WhatIf  = [bool]$WhatIfPreference
+        Confirm = ($ConfirmPreference -eq 'Low')
+    }
+
     Write-Host "=== Cleaning Node.js (node_modules) ==="
-    Clear-NodeModules -Path $Path
+    Clear-NodeModules @childParams
 
     Write-Host "=== Cleaning .NET (bin, obj) ==="
-    Clear-DotNetBuildFolders -Path $Path
+    Clear-DotNetBuildFolders @childParams
 
     Write-Host "=== Cleaning Java/JVM (target, build) ==="
-    Clear-JavaBuildFolders -Path $Path
+    Clear-JavaBuildFolders @childParams
 
     Write-Host "=== Cleaning Python (__pycache__, *.pyc, dist, *.egg-info) ==="
-    Clear-PythonBuildFolders -Path $Path
+    Clear-PythonBuildFolders @childParams
 
     Write-Host "=== Cleaning Rust (target) ==="
-    Clear-RustBuildFolders -Path $Path
+    Clear-RustBuildFolders @childParams
 }
 
 Set-Alias cleanall Clear-AllBuildFolders
