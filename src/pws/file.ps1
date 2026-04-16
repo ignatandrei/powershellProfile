@@ -183,8 +183,8 @@ function Enable-FolderCaseSensitive {
         return
     }
 
-    $items = Get-ChildItem -LiteralPath $Path -Force
-    $isEmpty = ($items.Count -eq 0)
+    $firstItem = Get-ChildItem -LiteralPath $Path -Force -ErrorAction Stop | Select-Object -First 1
+    $isEmpty = ($null -eq $firstItem)
 
     $tempFolder = $null
     if (-not $isEmpty) {
