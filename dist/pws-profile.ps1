@@ -1,7 +1,7 @@
 # ============================================================================
 # Unified PowerShell Profile
-# Generated: 2026-04-16 21:32:12 +03:00
-# Repository: (local run)
+# Generated: 2026-04-16 18:40:41 +00:00
+# Repository: ignatandrei/powershellProfile
 # Source folder: src/pws
 # Files concatenated in alphabetical order
 # ============================================================================
@@ -1821,10 +1821,18 @@ function Enable-FolderCaseSensitive {
     $tempFolder = $null
     if (-not $isEmpty) {
         $tempFolder = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
-        New-Item -ItemType Directory -Path $tempFolder | Out-Null
+        New-Item -ItemType Directory -Path $tempFolder -ErrorAction Stop | Out-Null
         Write-Verbose "Copying contents of '$Path' to temporary folder '$tempFolder'."
-        Get-ChildItem -LiteralPath $Path -Force | Copy-Item -Destination $tempFolder -Recurse -Force
-        Get-ChildItem -LiteralPath $Path -Force | Remove-Item -Recurse -Force
+        try {
+            Get-ChildItem -LiteralPath $Path -Force -ErrorAction Stop | Copy-Item -Destination $tempFolder -Recurse -Force -ErrorAction Stop
+            Get-ChildItem -LiteralPath $Path -Force -ErrorAction Stop | Remove-Item -Recurse -Force -ErrorAction Stop
+        }
+        catch {
+            if (Test-Path -LiteralPath $tempFolder -PathType Container) {
+                Remove-Item -LiteralPath $tempFolder -Recurse -Force -ErrorAction SilentlyContinue
+            }
+            throw
+        }
     }
 
     try {
@@ -1843,9 +1851,14 @@ function Enable-FolderCaseSensitive {
     finally {
         if ($null -ne $tempFolder) {
             Write-Verbose "Restoring contents from '$tempFolder' back to '$Path'."
-            Get-ChildItem -LiteralPath $tempFolder -Force | Copy-Item -Destination $Path -Recurse -Force
-            Remove-Item -LiteralPath $tempFolder -Recurse -Force
-            Write-Verbose "Contents successfully restored to '$Path'."
+            try {
+                Get-ChildItem -LiteralPath $tempFolder -Force -ErrorAction Stop | Copy-Item -Destination $Path -Recurse -Force -ErrorAction Stop
+                Remove-Item -LiteralPath $tempFolder -Recurse -Force -ErrorAction Stop
+                Write-Verbose "Contents successfully restored to '$Path'."
+            }
+            catch {
+                throw
+            }
         }
     }
 }
