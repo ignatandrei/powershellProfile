@@ -123,7 +123,6 @@ function Get-HtmlColorCodes {
         [PSCustomObject]@{ Name = "DeepSkyBlue";          Hex = "#00BFFF"; R = 0;   G = 191; B = 255 }
         [PSCustomObject]@{ Name = "DodgerBlue";           Hex = "#1E90FF"; R = 30;  G = 144; B = 255 }
         [PSCustomObject]@{ Name = "CornflowerBlue";       Hex = "#6495ED"; R = 100; G = 149; B = 237 }
-        [PSCustomObject]@{ Name = "MediumSlateBlue";      Hex = "#7B68EE"; R = 123; G = 104; B = 238 }
         [PSCustomObject]@{ Name = "RoyalBlue";            Hex = "#4169E1"; R = 65;  G = 105; B = 225 }
         [PSCustomObject]@{ Name = "Blue";                 Hex = "#0000FF"; R = 0;   G = 0;   B = 255 }
         [PSCustomObject]@{ Name = "MediumBlue";           Hex = "#0000CD"; R = 0;   G = 0;   B = 205 }
